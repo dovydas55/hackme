@@ -1,4 +1,5 @@
 $(document).ready(function () {
+	var $ptty = $('#terminal').Ptty();
 	$('[data-toggle=offcanvas]').click(function () {
 		$(this).toggleClass('visible-xs text-center');
 		$(this).find('i').toggleClass('glyphicon-chevron-right glyphicon-chevron-left');
