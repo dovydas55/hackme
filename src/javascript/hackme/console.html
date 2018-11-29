@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<title>Hackme</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<style type="text/css">
+		iframe {
+			display: block;
+			background: #000;
+			border: none;
+			height: 100vh;
+			width: 50%;
+			float: left;
+		}
+		#term{
+			display: block;
+			background: #000;
+			border: none;
+			height: 100vh;
+		}
+	</style>
+
+</head>
+
+<body style="margin:0px;padding:0px;overflow:hidden">
+	<iframe src="index.html" frameborder="0"></iframe>
+	<div id="term"></div>
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/ptty.jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var $new_term = $('<div id="terminal" class="term"></div>')
+            	.appendTo('#term');
+			var $ptty = $new_term.Ptty();
+			$ptty.register('command', {
+    name : 'response',
+    method : function(cmd){
+        // Get the arguments 
+        var last = $ptty.get_command_option('last');
+        console.log(cmd);
+        var args = last.split(' ');
+        // Remove the command name
+        args.shift();
+        try {
+            cmd = JSON.parse(args.join(' '));
+        } catch (e) {
+            cmd = {out : 'Usage: response {"out" : "This is the output"}'};
+        }
+        return cmd;
+    },
+    help: 'Will output the desired command options.'
+});
+		});
+	</script>
+</body>
+</html>
