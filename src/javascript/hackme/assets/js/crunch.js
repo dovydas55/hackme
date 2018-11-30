@@ -45,7 +45,7 @@ $(document).ready(function () {
 
 	function generatePasswords() {
 		Object.keys(answers).forEach(key => answers[key] === undefined ? delete answers[key] : '');
-		console.log(perm(Object.values(answers)))
+		filesystem["pass.txt"] = perm(Object.values(answers));
 	}
 
 	function perm(xs) {
