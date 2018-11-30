@@ -33,7 +33,13 @@ var hydraFunc = function (cmd) {
         }, 100 + 150 * i);
 	}
 
+	window.setTimeout(function(){
+            $ptty.echo(`Password was not found! try again later :P`);
+            $ptty.get_terminal('.input').show();
+        }, 100 + 150 * passwords.length);
+
 	cmd.out = "Hydra v8.2 (c) 2016 - Please do not use in military or secret service opganizations, or for illegal purposes.\n\nHydra starting at (2018-11-30 20:17:05)\n";
+	$ptty.get_terminal('.input').hide();
 
 	$ptty.set_command_option(cmd);
 	return false;
