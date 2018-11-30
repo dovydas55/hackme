@@ -7,4 +7,11 @@ $(document).ready(function () {
 		$('#xs-menu').toggleClass('visible-xs').toggleClass('hidden-xs');
 		$('#btnShow').toggle();
 	});
+
+	$( '#loginForm' ).submit(function( event ) {
+		if($('#password').val() === atob('TXVycmF5UnVzdA==')){
+			alert( 'You logged in!' );
+		}
+		event.preventDefault();
+	});
 });
