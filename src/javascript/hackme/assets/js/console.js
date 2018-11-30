@@ -1,5 +1,5 @@
 $(document).ready(function () {
-	const filesystem = {};
+	filesystem = {};
 	$ptty = $('#terminal').Ptty();
 
 	$ptty.register('command', {
