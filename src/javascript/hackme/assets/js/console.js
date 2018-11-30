@@ -5,8 +5,7 @@ $(document).ready(function () {
 			welcome: `Kali linux${" "+(new Date()).toISOString().slice(0,19)}<br>Type <b>help</b> to list the available commands.`
 		}
 	});
-	$ptty.echo("Hello noob, listen Up!\nOur l33test hacker went on a vacation for a month to tailand.\nWe need you to hack this guys account, while our other hacker is away.\nWe need to to get into his account and write into his status this text:\nThe president is a lier. Mister Trump should know that I have never even meet his wife.\nAnd to accuse me of such illfallen deeds. I have never had sex with THAT woman!\nHe is a bigget and a traitor!<br><br>")
-
+	$ptty.echo("Hello noob, listen Up!\nOur g3n3r4tor hacker went on a vacation for a month to Thailand.\nWe need you to hack this guys account, while our other hacker is away.\nWe need to to get into his account and write into his status this text:\nThe president is a lier. Mister Trump should know that I have never even meet his wife.\nAnd to accuse me of such illfallen deeds. I have never had sex with THAT woman!\nHe is a bigget and a traitor!<br><br>")
 	$ptty.register('command', {
 		name: 'ls',
 		method: function (cmd) {
