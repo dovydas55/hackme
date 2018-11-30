@@ -14,27 +14,32 @@ $(document).ready(function () {
 		9:"> Company name: ",
 		10:"> Street name: ",
 	};
+	var answers = {};
 
 	$ptty.register('command', {
 		name: 'cr',
 		method : function(cmd){
-			cmd.out = introText;
-			cmd.next = 'cr 0';
-			cmd.ps = '(enter to continue)';
+			if(!cmd[1] && !cmd[2]){
+				cmd.out = introText;
+				cmd.next = 'cr 0';
+				cmd.ps = '(enter to continue)';
+			}
 			if(cmd[1]){
 				var num = parseInt(cmd[1], 10);
-				cmd.next = 'cr '+(num+1);
+				if (num !== 0) answers[num] = cmd[2];
 				if (num < Object.keys(questions).length){
-					cmd.out = questions[num];
+					cmd.ps = questions[num];
+					cmd.next = `cr ${num+1} %cmd%`;
 				} else {
 					cmd.out = endText;
 					cmd.ps = cmd.next = null; // end game.
+					console.log(answers);
 				}
 			}
 			$ptty.set_command_option(cmd);
 			return false;
 		},
-		options : [1],
+		options : [1, 2],
 		help : 'A magic trick!'
 	});
 });
