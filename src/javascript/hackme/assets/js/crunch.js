@@ -26,7 +26,7 @@ $(document).ready(function () {
 			}
 			if (cmd[1]) {
 				var num = parseInt(cmd[1], 10);
-				if (num !== 0) answers[num] = cmd[2];
+				if (num !== 0) answers[num - 1] = cmd[2];
 				if (num < Object.keys(questions).length) {
 					cmd.ps = questions[num];
 					cmd.next = `cr ${num + 1} %cmd%`;
@@ -44,8 +44,14 @@ $(document).ready(function () {
 	});
 
 	function generatePasswords() {
+		var filename = 'passwords.txt';
 		Object.keys(answers).forEach(key => answers[key] === undefined ? delete answers[key] : '');
-		filesystem["pass.txt"] = perm(Object.values(answers));
+		console.log(answers);
+		if (answers["0"]){
+			filename = answers[0] + '.txt';
+		}
+		filesystem[filename] = perm(Object.values(answers));
+		answers = {};
 	}
 
 	function perm(xs) {
