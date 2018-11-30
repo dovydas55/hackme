@@ -7,5 +7,4 @@ $(document).ready(function () {
 		$('#xs-menu').toggleClass('visible-xs').toggleClass('hidden-xs');
 		$('#btnShow').toggle();
 	});
-	var $ptty = $('#terminal').Ptty();
 });
