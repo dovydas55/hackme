@@ -51,15 +51,14 @@ $(document).ready(function () {
 	function perm(xs) {
 		let ret = [];
 		for (let i = 0; i < xs.length; i = i + 1) {
-			let rest = perm(xs.slice(0, i).concat(xs.slice(i + 1)));
-			if (!rest.length) {
-				ret.push([xs[i]])
-			} else {
-				for (let j = 0; j < rest.length; j = j + 1) {
-					ret.push([xs[i]].concat(rest[j]))
+			for (let j = 0; j < xs.length; j = j + 1) {
+				if(i === j){
+					continue;
 				}
+				ret.push(xs[i] + xs[j])
+				ret.push(xs[j] + xs[i])
 			}
 		}
-		return ret.join("");
+		return ret.join("\n");
 	}
 });
