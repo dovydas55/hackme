@@ -1,6 +1,6 @@
 $(document).ready(function () {
 	const filesystem = {};
-	var $ptty = $('#terminal').Ptty();
+	$ptty = $('#terminal').Ptty();
 
 	$ptty.register('command', {
 		name: 'ls',
