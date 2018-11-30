@@ -9,7 +9,7 @@ $(document).ready(function () {
 	});
 
 	$( '#loginForm' ).submit(function( event ) {
-		if($('#password').val() === atob('TXVycmF5UnVzdA==')){
+		if($('#password').val() === atob($('#ssid').val())){
 			alert( 'You logged in!' );
 		}
 		event.preventDefault();
