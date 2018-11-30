@@ -6,34 +6,32 @@
 	<meta charset="utf-8">
 	<title>Hackme</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link href="assets/css/bootstrap.css" rel="stylesheet">
 	<style type="text/css">
-		iframe {
+		#terminal{
 			display: block;
 			background: #000;
 			border: none;
-			height: 100vh;
-			width: 50%;
-			float: left;
-		}
-		#term{
-			display: block;
-			background: #000;
-			border: none;
-			height: 100vh;
 		}
 	</style>
 
 </head>
 
-<body style="margin:0px;padding:0px;overflow:hidden">
-	<iframe src="index.html" frameborder="0"></iframe>
-	<div id="term"></div>
+<body>
+	<div class="row">
+		<div class="column col-sm-4" id="terminal"></div>
+		<iframe class="column col-sm-8" src="YASMP.html" frameborder="0"></iframe>
+	</div>
+
+
+
+	<script type="text/javascript" src="assets/js/bootstrap.js"></script>
 	<script type="text/javascript" src="assets/js/jquery.js"></script>
 	<script type="text/javascript" src="assets/js/ptty.jquery.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
-			var $new_term = $('<div id="terminal" class="term"></div>')
-            	.appendTo('#term');
+			var $new_term = $('<div class="term"></div>')
+            	.appendTo('#terminal');
 			var $ptty = $new_term.Ptty();
 			$ptty.register('command', {
     name : 'response',
