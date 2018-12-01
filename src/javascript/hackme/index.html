@@ -41,14 +41,18 @@
 									</div>
 								</div>
 							</form>
-							<!--
-							<ul class="nav navbar-nav">
+
+							<ul id="profile" class="nav navbar-nav navbar-right" style="display:block;">
 								<li>
-									<a href="#postModal" style="padding: 0%;" role="button" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i> Post</a>
+									<a href="#postModal" style="padding: 0%;margin-top: 4px;" role="button" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i> Post</a>
 								</li>
+								<li>
+									<img src="assets/img/bg_5.jpg" class="pull-right" style="height: 30px;width: 30px; border-radius: 50%;margin-left: 10px;">
+								</li>
+
 							</ul>
-							-->
-							<form autocomplete="off" id="loginForm" class="navbar-form navbar-right" role="search">
+
+							<form autocomplete="off" id="loginForm" class="navbar-form navbar-right" role="search" style="display:none;">
 								<div class="form-group">
 									<input type="text" class="form-control input-sm" name="username" placeholder="Username" required>
 								</div>
@@ -78,7 +82,7 @@
 										</div>
 									</div>
 
-									<div class="well">
+									<div id="status" class="well" style="display:none;">
 										<form class="form-horizontal" role="form">
 											<h4>What's New</h4>
 											<div class="form-group" style="padding:14px;">
