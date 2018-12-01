@@ -1,50 +1,81 @@
+var tutorial = {
+	0: "#Before you can start hacking lets learn some basic UNIX commands",
+	1: "#Lets start by creating a new file called *createme.txt* by typing *touch createme.txt*",
+	2: "#You can browse the file system by typing in *ls*",
+	3: "#Now lets delete the file *createme.txt* using remove command by executing *rm createme.txt*",
+	4: "#Make sure that the file has been deleted by typing in *ls*",
+	5: "#If you get in trouble juts type in *help* to get more details about available commands",
+	6: "#Ok since you have familiarized yourself with some basics, lets get into more serious hacking!",
+	7: "#In order to hack into this account we need to figure out the victims *username* and *password*",
+	8: "#To figure out the victims username is easy - *just look around their social media profile and see what you can find...*",
+	9: "#To crack the password can be a little more tricky",
+	10: "#One of the techniques is to use *brute force* to crack target's password by automatically trying many different passwords",
+	11: "#Very often people tend to expose to much of their personal information on social media platforms",
+	12: "#Without even realizing that they have made their password available for everyone to see...",
+	13: "#Start by looking over the public profile and learning as much as possible about your target",
+	14: "#Now lets use a tool called *cupp* to generate possible passwords for the attack",
+	15: "#You just generated a dictionary that potentially holds your victims password!",
+	16: "#Lets see how it looks like :D",
+	17: "#Type *ls* to list the files in your current working directory",
+	18: "#Type *cat filename.txt* to view the file contents",
+	19: "#Now lets use these passwords to attempt a bruteforce attack to your victims login!!",
+	20: "#To do that you can use a tool called *hydra*",
+	21: "#Execute the following command *hydra generatedfile.txt*",
+}
 $(document).ready(function () {
 	filesystem = {};
 	$ptty = $('#terminal').Ptty({
 		ps:"root@kali-rolling:~#",
 		i18n: {
-			//welcome: `Kali linux${" "+(new Date()).toISOString().slice(0,19)}<br>Type <b>help</b> to list the available commands.`
 			welcome: `Kali GNU/Linux Rolling kali-rolling tty3<br>Last login: ${new Date().toISOString().slice(0,19)} from 192.168.122.1 on pts/2<br>Linux kali-rolling 4.4.0-kali1-amd4`,
 		}
 	});
-	//$ptty.echo("<br/>Hello noob, listen Up!")
-	//$ptty.echo("Our g3n3r4tor hacker went on a vacation to Thailand.\nWe need to to get into his account and write into his status this text:\n\tThe president is a lier. Mister Trump should know\n\tthat I have never even meet his wife.\n\tAnd to accuse me of such illfallen deeds.\n\tI have never had sex with THAT woman!\n\tHe is a bigget and a traitor!\nYou can find his email and other data on his profile.\nYou need to harvest the data and put it into the Rainbow table generator command \"cr\"\nIf you dont know how it works then just write help.\n\n")
-	//$ptty.echo("We need you to hack this guys account, while our other hacker is away")
-	//$ptty.echo("We need you to hack this guys account, while our other hacker is away")
 	$ptty.echo("<br>")
-	$ptty.echo("<span class='color-green'>#Before you can start hacking lets learn some basic UNIX commands</span>")
-	$ptty.echo("<span class='color-green'>#Lets start by creating a new file called <b>createme.txt</b> by typing <b>touch createme.txt</b></span>")
-	$ptty.echo("root@kali-rolling:~# touch createme.txt")
-	$ptty.echo("<span class='color-green'>#You can browse the file system by typing in <b>ls</b></span>")
-	$ptty.echo("root@kali-rolling:~# ls")
-	$ptty.echo("createme.txt")
-	$ptty.echo("<span class='color-green'>#Now lets delete the file <b>createme.txt</b> using remove command by executing <b>rm createme.txt</b></span>")
-	$ptty.echo("root@kali-rolling:~# rm createme.txt")
-	$ptty.echo("<span class='color-green'>#Make sure that the file has been deleted by typing in <b>ls</b></span>")
-	$ptty.echo("root@kali-rolling:~# ls")
-	$ptty.echo("<span class='color-green'>#If you get in trouble juts type in <b>help</b> to get more details about available commands</span>")
-	$ptty.echo("<span class='color-green'>#Ok since you have familiarized yourself with some basics, lets get into more serious hacking!</span>")
-	$ptty.echo("<span class='color-green'>#In order to hack into this account we need to figure out the victims <b>username</b> and <b>password</b> </span>")
-	$ptty.echo("<span class='color-green'>#To figure out the victims username is easy - <b>just look around their social media profile and see what you can find...</b> </span>")
-	$ptty.echo("<span class='color-green'>#To crack the password can be a little more tricky </span>")
-	$ptty.echo("<span class='color-green'>#One of the techniques is to use <b>brute force</b> to crack target's password by automatically trying many different passwords </span>")
-	$ptty.echo("<span class='color-green'>#Very often people tend to expose to much of their personal information on social media platforms</span>")
-	$ptty.echo("<span class='color-green'>#Without even realizing that they have made their password available for everyone to see...</span>")
-	$ptty.echo("<span class='color-green'>#Start by looking over the public profile and learning as much as possible about your target</span>")
-	$ptty.echo("<span class='color-green'>#Now lets use a tool called <b>cupp</b> to generate possible passwords for the attack </span>")
-	$ptty.echo("root@kali-rolling:~# cupp")
-	$ptty.echo("<span class='color-green'>#You just generated a dictionary that potentially holds your victims password! </span>")
-	$ptty.echo("<span class='color-green'>#Lets see how it looks like :D </span>")
-	$ptty.echo("<span class='color-green'>#Type <b>ls</b> to list the files in your current working directory </span>")
-	$ptty.echo("<span class='color-green'>#Type <b>cat filename.txt</b> to view the file contents </span>")
-	$ptty.echo("root@kali-rolling:~# ls")
-	$ptty.echo("root@kali-rolling:~# cat filename.txt")
-	$ptty.echo("password1<br>passRec2<br>RecFitr")
-	$ptty.echo("<span class='color-green'>#Now lets use these passwords to attempt a bruteforce attack to your victims login!!</span>")
-	$ptty.echo("<span class='color-green'>#To do that you can use a tool called <b>hydra</b></span>")
-	$ptty.echo("<span class='color-green'>#Execute the following command <b>hydra generatedfile.txt</b></span>")
-	$ptty.echo("root@kali-rolling:~# hydra generatedfile.txt")
+	$ptty.register('command', {
+		name: 'tut',
+		method: function (cmd) {
+			if (!cmd[1]) {
+				$ptty.get_terminal('.input').hide();
+				animateNarration(tutorial[0].split(""), true)
+				cmd.next = 'tut 0';
+				cmd.ps = '(enter to continue)';
+			}
+			if (cmd[1]) {
+				var num = parseInt(cmd[1], 10) + 1;
+				if (num < Object.keys(tutorial).length) {
+					$ptty.get_terminal('.input').hide();
+					animateNarration(tutorial[num].split(""))
+					cmd.ps = '(enter to continue)';
+					cmd.next = `tut ${num + 1}`;
+				} else {
+					cmd.out = `DONE`;
+					cmd.ps = cmd.next = null; // end game.
+				}
+			}
+			$ptty.set_command_option(cmd);
+			return false;
+		},
+		options: [1],
+		help: 'Game tutorial'
+	});
 
+	function animateNarration(text, first){
+		var typebox = $('<span class="color-green"></span>').appendTo('.content .cmd_out:last');
+		if (first){
+			typebox.html("");
+		} else {
+			typebox.html(text.shift());
+		}
+		setTimeout(function(){
+			if(text.length !== 0){
+				animateNarration(text, false);
+			} else {
+				//done
+				console.log("DONE")
+				$ptty.get_terminal('.input').show();
+			}
+		}, 30);
+	}
 
 	$ptty.register('command', {
 		name: 'ls',
