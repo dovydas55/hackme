@@ -25,15 +25,25 @@ $(document).ready(function () {
 	$ptty.echo("<span class='color-green'>#If you get in trouble juts type in <b>help</b> to get more details about available commands</span>")
 	$ptty.echo("<span class='color-green'>#Ok since you have familiarized yourself with some basics, lets get into more serious hacking!</span>")
 	$ptty.echo("<span class='color-green'>#In order to hack into this account we need to figure out the victims <b>username</b> and <b>password</b> </span>")
-
 	$ptty.echo("<span class='color-green'>#To figure out the victims username is easy - <b>just look around their social media profile and see what you can find...</b> </span>")
 	$ptty.echo("<span class='color-green'>#To crack the password can be a little more tricky </span>")
-	$ptty.echo("<span class='color-green'>#One of the techniques is to use <b>brute force</b> to crack targets password </span>")
+	$ptty.echo("<span class='color-green'>#One of the techniques is to use <b>brute force</b> to crack target's password by automatically trying many different passwords </span>")
 	$ptty.echo("<span class='color-green'>#Very often people tend to expose to much of their personal information on social media platforms</span>")
 	$ptty.echo("<span class='color-green'>#Without even realizing that they have made their password available for everyone to see...</span>")
 	$ptty.echo("<span class='color-green'>#Start by looking over the public profile and learning as much as possible about your target</span>")
 	$ptty.echo("<span class='color-green'>#Now lets use a tool called <b>cupp</b> to generate possible passwords for the attack </span>")
 	$ptty.echo("root@kali-rolling:~# cupp")
+	$ptty.echo("<span class='color-green'>#You just generated a dictionary that potentially holds your victims password! </span>")
+	$ptty.echo("<span class='color-green'>#Lets see how it looks like :D </span>")
+	$ptty.echo("<span class='color-green'>#Type <b>ls</b> to list the files in your current working directory </span>")
+	$ptty.echo("<span class='color-green'>#Type <b>cat filename.txt</b> to view the file contents </span>")
+	$ptty.echo("root@kali-rolling:~# ls")
+	$ptty.echo("root@kali-rolling:~# cat filename.txt")
+	$ptty.echo("password1<br>passRec2<br>RecFitr")
+	$ptty.echo("<span class='color-green'>#Now lets use these passwords to attempt a bruteforce attack to your victims login!!</span>")
+	$ptty.echo("<span class='color-green'>#To do that you can use a tool called <b>hydra</b></span>")
+	$ptty.echo("<span class='color-green'>#Execute the following command <b>hydra generatedfile.txt</b></span>")
+	$ptty.echo("root@kali-rolling:~# hydra generatedfile.txt")
 
 
 	$ptty.register('command', {
