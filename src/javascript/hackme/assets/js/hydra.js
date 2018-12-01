@@ -58,7 +58,7 @@ $(document).ready(function () {
 	$ptty.register('command', {
 		name: 'hydra',
 		method: hydraFunc,
-		options: [1, "-i"],
+		options: [1],
 		help: 'Will add file to the directory'
 	});
 });

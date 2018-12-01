@@ -10,7 +10,9 @@ $(document).ready(function () {
 
 	$( '#loginForm' ).submit(function( event ) {
 		if($('#password').val() === atob($('#ssid').val())){
-			alert( 'You logged in!' );
+			$( '#loginForm' ).hide();
+			$( '#profile' ).show();
+			$( '#status' ).show();
 		}
 		event.preventDefault();
 	});
