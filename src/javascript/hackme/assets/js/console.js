@@ -14,14 +14,14 @@ $(document).ready(function () {
 	$ptty.echo("<br>")
 	$ptty.echo("<span class='color-green'>#Before you can start hacking lets learn some basic UNIX commands</span>")
 	$ptty.echo("<span class='color-green'>#Lets start by creating a new file called <b>createme.txt</b> by typing <b>touch createme.txt</b></span>")
-	$ptty.echo("$ touch createme.txt")
+	$ptty.echo("root@kali-rolling:~# touch createme.txt")
 	$ptty.echo("<span class='color-green'>#You can browse the file system by typing in <b>ls</b></span>")
-	$ptty.echo("$ ls")
+	$ptty.echo("root@kali-rolling:~# ls")
 	$ptty.echo("createme.txt")
 	$ptty.echo("<span class='color-green'>#Now lets delete the file <b>createme.txt</b> using remove command by executing <b>rm createme.txt</b></span>")
-	$ptty.echo("$ rm createme.txt")
+	$ptty.echo("root@kali-rolling:~# rm createme.txt")
 	$ptty.echo("<span class='color-green'>#Make sure that the file has been deleted by typing in <b>ls</b></span>")
-	$ptty.echo("$ ls")
+	$ptty.echo("root@kali-rolling:~# ls")
 	$ptty.echo("<span class='color-green'>#If you get in trouble juts type in <b>help</b> to get more details about available commands</span>")
 	$ptty.echo("<span class='color-green'>#Ok since you have familiarized yourself with some basics, lets get into more serious hacking!</span>")
 	$ptty.echo("<span class='color-green'>#In order to hack into this account we need to figure out the victims <b>username</b> and <b>password</b> </span>")
@@ -33,7 +33,7 @@ $(document).ready(function () {
 	$ptty.echo("<span class='color-green'>#Without even realizing that they have made their password available for everyone to see...</span>")
 	$ptty.echo("<span class='color-green'>#Start by looking over the public profile and learning as much as possible about your target</span>")
 	$ptty.echo("<span class='color-green'>#Now lets use a tool called <b>cupp</b> to generate possible passwords for the attack </span>")
-	$ptty.echo("$ cupp")
+	$ptty.echo("root@kali-rolling:~# cupp")
 
 
 	$ptty.register('command', {
