@@ -16,11 +16,11 @@ $(document).ready(function () {
 	var answers = {};
 
 	$ptty.register('command', {
-		name: 'cr',
+		name: 'cupp',
 		method: function (cmd) {
 			if (!cmd[1] && !cmd[2]) {
 				cmd.out = introText;
-				cmd.next = 'cr 0';
+				cmd.next = 'cupp 0';
 				cmd.ps = '(enter to continue)';
 			}
 			if (cmd[1]) {
@@ -28,7 +28,7 @@ $(document).ready(function () {
 				if (num !== 0) answers[num - 1] = cmd[2];
 				if (num < Object.keys(questions).length) {
 					cmd.ps = questions[num];
-					cmd.next = `cr ${num + 1} %cmd%`;
+					cmd.next = `cupp ${num + 1} %cmd%`;
 				} else {
 					var results = generatePasswords();
 					cmd.out = `[+] Generating dictionary... \n[+] Sorting list and removing dublicate... \n[+] Saving dictionary to ${results.filename}, counting ${results.found} words.`;
@@ -39,7 +39,7 @@ $(document).ready(function () {
 			return false;
 		},
 		options: [1, 2],
-		help: 'A magic trick!'
+		help: 'Generates password dictionary with interactive questionary'
 	});
 
 	function generatePasswords() {
