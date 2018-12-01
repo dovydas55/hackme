@@ -27,7 +27,12 @@ $(document).ready(function () {
 
 	$ptty.echo("<span class='color-green'>#To figure out the victims username is easy - <b>just look around their social media profile and see what you can find...</b> </span>")
 	$ptty.echo("<span class='color-green'>#To crack the password can be a little more tricky </span>")
-	$ptty.echo("<span class='color-green'>#One of the techniques is to use <b>brute force</b> to crack their password </span>")
+	$ptty.echo("<span class='color-green'>#One of the techniques is to use <b>brute force</b> to crack targets password </span>")
+	$ptty.echo("<span class='color-green'>#Very often people tend to expose to much of their personal information on social media platforms</span>")
+	$ptty.echo("<span class='color-green'>#Without even realizing that they have made their password available for everyone to see...</span>")
+	$ptty.echo("<span class='color-green'>#Start by looking over the public profile and learning as much as possible about your target</span>")
+	$ptty.echo("<span class='color-green'>#Now lets use a tool called <b>cupp</b> to generate possible passwords for the attack </span>")
+	$ptty.echo("$ cupp")
 
 
 	$ptty.register('command', {

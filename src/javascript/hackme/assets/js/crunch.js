@@ -1,5 +1,5 @@
 $(document).ready(function () {
-	var introText = `[+] Insert information about the victim to make a dictionary \n[+] If you dont know all of the information, just hit ENTER when asked \n`;
+	var introText = `[+] WELCOME TO -CUPP- \n[+] Insert information about the victim to make a dictionary \n[+] If you dont know all of the information, just hit ENTER when asked \n`;
 	var questions = {
 		0: "> First Name: ",
 		1: "> Surname: ",
