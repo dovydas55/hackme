@@ -1,6 +1,5 @@
 $(document).ready(function () {
 	var introText = `[+] Insert information about the victim to make a dictionary \n[+] If you dont know all of the information, just hit ENTER when asked \n`;
-	var endText = `[+] Generating dictionary... \n[+] Sorting list and removing dublicate... \n[+] Saving dictionary to pass.txt, counting 4322 words.`;
 	var questions = {
 		0: "> First Name: ",
 		1: "> Surname: ",
@@ -31,8 +30,8 @@ $(document).ready(function () {
 					cmd.ps = questions[num];
 					cmd.next = `cr ${num + 1} %cmd%`;
 				} else {
-					generatePasswords()
-					cmd.out = endText;
+					var results = generatePasswords();
+					cmd.out = `[+] Generating dictionary... \n[+] Sorting list and removing dublicate... \n[+] Saving dictionary to ${results.filename}, counting ${results.found} words.`;
 					cmd.ps = cmd.next = null; // end game.
 				}
 			}
@@ -46,12 +45,13 @@ $(document).ready(function () {
 	function generatePasswords() {
 		var filename = 'passwords.txt';
 		Object.keys(answers).forEach(key => answers[key] === undefined ? delete answers[key] : '');
-		console.log(answers);
 		if (answers["0"]){
 			filename = answers[0] + '.txt';
 		}
-		filesystem[filename] = perm(Object.values(answers));
+		var results = perm(Object.values(answers));
+		filesystem[filename] = results.set;
 		answers = {};
+		return {filename: filename, found: results.len};
 	}
 
 	function perm(xs) {
@@ -64,6 +64,6 @@ $(document).ready(function () {
 				ret.push(xs[i] + xs[j])
 			}
 		}
-		return ret.join("\n");
+		return {set: ret.join("\n"), len: ret.length};
 	}
 });
