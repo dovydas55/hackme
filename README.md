@@ -15,5 +15,7 @@ The following is the list of supported commands
 * Edit the profile to look better
 * Add post when making status
 * Make sure we provide clues for the password
+* get player feedback
 extra
 * randomize Profile info for replayablity
+* make commands more pretty or better
