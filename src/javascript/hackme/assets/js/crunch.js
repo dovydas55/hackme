@@ -62,7 +62,6 @@ $(document).ready(function () {
 					continue;
 				}
 				ret.push(xs[i] + xs[j])
-				ret.push(xs[j] + xs[i])
 			}
 		}
 		return ret.join("\n");

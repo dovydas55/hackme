@@ -1,11 +1,4 @@
-function wait(ms){
-   var start = new Date().getTime();
-   var end = start;
-   while(end < start + ms) {
-     end = new Date().getTime();
-  }
-}
-
+var passwords;
 var hydraFunc = function (cmd) {
 	if(!(1 in cmd))
 	{
@@ -22,21 +15,35 @@ var hydraFunc = function (cmd) {
 	}
 
 	//let passwords = ["afdog33", "cat89", "ble", "haha","afdog33", "cat89", "ble", "haha","afdog33", "cat89", "ble", "haha","afdog33", "cat89", "ble", "haha"];
-	let passwords = filesystem[filename].split("\n");
-
-	for (var i = passwords.length - 1; i >= 0; i--) {
-		let pass =  passwords[i];
-		let length = passwords.length;
-		let index = i+1;
-		window.setTimeout(function(){
-            $ptty.echo(`[ATTEMPT] - pass \"${pass}\" ${index}/${length}`);
-        }, 100 + 150 * i);
+	let fileContent = filesystem[filename];
+	if(fileContent === "")
+	{
+		cmd.out = "hydra: "+filename+": file is empty";
+		return cmd;
 	}
+	passwords = filesystem[filename].split("\n");
 
-	window.setTimeout(function(){
-            $ptty.echo(`Password was not found! try again later :P`);
-            $ptty.get_terminal('.input').show();
-        }, 100 + 150 * passwords.length);
+	setTimeout(function(){
+		var len = passwords.length;
+		(function run(passes){
+			setTimeout(function(){
+				let pass =  passes.pop()
+				if(pass === atob($('#ssid').val())) {
+					$('#password').val(pass)
+					$ptty.echo(`Password found!! \"${pass}\"`);
+					$ptty.get_terminal('.input').show();
+					return;
+				}else if (passes.length <= 0){
+					$ptty.echo(`Password was not found! try again later :P`);
+            		$ptty.get_terminal('.input').show();
+            		return;
+				}
+
+	            $ptty.echo(`[ATTEMPT] - pass \"${pass}\" ${len-passes.length}/${len}`);
+	            run(passes);
+	        }, 150);
+		}(passwords))
+    }, 100 );
 
 	cmd.out = "Hydra v8.2 (c) 2016 - Please do not use in military or secret service opganizations, or for illegal purposes.\n\nHydra starting at (2018-11-30 20:17:05)\n";
 	$ptty.get_terminal('.input').hide();
