@@ -1,6 +1,7 @@
 $(document).ready(function () {
 	filesystem = {};
 	$ptty = $('#terminal').Ptty({
+		ps:"root@kali-rolling:~#",
 		i18n: {
 			//welcome: `Kali linux${" "+(new Date()).toISOString().slice(0,19)}<br>Type <b>help</b> to list the available commands.`
 			welcome: `Kali GNU/Linux Rolling kali-rolling tty3<br>Last login: ${new Date().toISOString().slice(0,19)} from 192.168.122.1 on pts/2<br>Linux kali-rolling 4.4.0-kali1-amd4`,
