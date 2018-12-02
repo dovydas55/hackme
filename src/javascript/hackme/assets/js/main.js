@@ -1,3 +1,8 @@
+const Social_user = {
+	name: "Roxy Angel",
+	img_url:"assets/img/bg_5.jpg"
+}
+
 $(document).ready(function () {
 	$('[data-toggle=offcanvas]').click(function () {
 		$(this).toggleClass('visible-xs text-center');
@@ -21,21 +26,21 @@ $(document).ready(function () {
 		event.preventDefault();
 	});
 
-	AddPost("This election is a total sham and a travesty. We are not a democracy!");
-	AddPost("I have never seen a thin person drinking Diet Coke");
-	AddPost("The conxept of global warming was created by and for the Chinese in order to make U.S. manufacturing non-competitive");
-	AddPost("People say my wall idea is crazy. China built a wall, and guess how many Mexicans they have. Checkmate.");
-	AddPost("Sorry losers and haters, but my I.Q. is one of the highest -and you all know it. Please dont feel so stupid or insecure, it's not your fault");
-	AddPost("@Jesus, such a loser. Washes people's feet. Very dirty. Would be nothing without daddy. Mom wasn't a virgin, needs to be said. SAD.");
-	AddPost("Look folks we're going to build a wall made of legos so people will step on them and turn back.");
+	AddPost("This election is a total sham and a travesty. We are not a democracy!", Social_user);
+	AddPost("I have never seen a thin person drinking Diet Coke", Social_user);
+	AddPost("The conxept of global warming was created by and for the Chinese in order to make U.S. manufacturing non-competitive", Social_user);
+	AddPost("People say my wall idea is crazy. China built a wall, and guess how many Mexicans they have. Checkmate.", Social_user);
+	AddPost("Sorry losers and haters, but my I.Q. is one of the highest -and you all know it. Please dont feel so stupid or insecure, it's not your fault", Social_user);
+	AddPost("@Jesus, such a loser. Washes people's feet. Very dirty. Would be nothing without daddy. Mom wasn't a virgin, needs to be said. SAD.", Social_user);
+	AddPost("Look folks we're going to build a wall made of legos so people will step on them and turn back.", Social_user);
 });
 
 
-function AddPost(text) {
+function AddPost(text, user) {
 	$(`<div class="panel panel-post">
 		<div class="panel-heading">
-			<img src="assets/img/bg_5.jpg" class="img-circle pull-left">
-			<a>Roxy Angel</a>
+			<img src="${user.img_url}" class="img-circle pull-left">
+			<a>${user.name}</a>
 		</div>
 		<div class="panel-body">
 			<p>${text}</p>
@@ -55,7 +60,7 @@ function AddPost(text) {
 
 function SubmitStatus(){
 	var textField = $('#status .form-control');
-	AddPost(textField.val());
+	AddPost(textField.val(), Social_user);
 	textField.val("")
 	return false;
 }
