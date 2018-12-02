@@ -1,3 +1,16 @@
+var hydralogo =
+String.raw`
+ __  __              __
+/\ \/\ \            /\ \
+\ \ \_\ \  __  __   \_\ \  _ __    __
+ \ \  _  \/\ \/\ \  /'_  \/\ '__\/'__ \_
+  \ \ \ \ \ \ \_\ \/\ \_\ \ \ \//\ \_\.\_
+   \ \_\ \_\/ ____ \ \___,_\ \_\\ \__/.\_\
+    \/_/\/_/ /___/> \/__,_ /\/_/ \/__/\/_/
+               /\___/
+               \/__/  `;
+
+
 var passwords;
 var hydraFunc = function (cmd) {
 	if(!(1 in cmd))
@@ -45,14 +58,17 @@ var hydraFunc = function (cmd) {
 		}(passwords))
     }, 100 );
 
-	cmd.out = "Hydra v8.2 (c) 2016 - Please do not use in military or secret service opganizations, or for illegal purposes.\n\nHydra starting at (2018-11-30 20:17:05)\n";
+	cmd.out = `${hydralogo}
+
+Hydra v8.2 (c) 2016 - Please do not use in military or secret service opganizations, or for illegal purposes.
+
+Hydra starting at (2018-11-30 20:17:05)
+`;
 	$ptty.get_terminal('.input').hide();
 
 	$ptty.set_command_option(cmd);
 	return false;
 }
-
-
 
 $(document).ready(function () {
 	$ptty.register('command', {
