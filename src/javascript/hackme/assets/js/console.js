@@ -1,5 +1,5 @@
 var tutorial = {
-	0: "#Before you can start hacking lets learn some basic UNIX commands",
+	0: " #Before you can start hacking lets learn some basic UNIX commands",
 	1: " #Lets start by creating a new file called *createme.txt* by typing *touch createme.txt*",
 	2: " #You can browse the file system by typing in *ls*",
 	3: " #Now lets delete the file *createme.txt* using remove command by executing *rm createme.txt*",
@@ -22,12 +22,39 @@ var tutorial = {
 	20: " #To do that you can use a tool called *hydra*",
 	21: " #Execute the following command *hydra generatedfile.txt*",
 }
+var whereInStory = 0;
 $(document).ready(function () {
 	filesystem = {};
 	$ptty = $('#terminal').Ptty({
 		ps:"root@kali-rolling:~#",
 		i18n: {
 			welcome: `Kali GNU/Linux Rolling kali-rolling tty3<br>Last login: ${new Date().toISOString().slice(0,19)} from 192.168.122.1 on pts/2<br>Linux kali-rolling 4.4.0-kali1-amd4`,
+		},
+		after_cmd: function(cmd){
+
+			var last = $ptty.get_command_option('last');
+			var args = last.split(' ');
+			var lastCommand = args[0];
+			if(lastCommand === "tut") return;
+			//if(lastCommand === "") return;
+			switch(whereInStory){
+				case 0: $ptty.run_command("tut 0", true); whereInStory++; break;
+				case 1:
+					if(last === "touch createme.txt")
+					{
+						whereInStory++;
+						$ptty.run_command("tut 1", true);
+					}
+					break;
+				case 2:
+					console.log(`"${last}"`, `"ls"`);
+					if(last === "ls")
+					{
+						whereInStory++;
+						$ptty.run_command("tut 2", true);
+					}
+					break;
+			}
 		}
 	});
 	$ptty.echo("<br>")
@@ -36,8 +63,8 @@ $(document).ready(function () {
 		method: function (cmd) {
 			if (!cmd[1]) {
 				$ptty.get_terminal('.input').hide();
-				animateNarration(tutorial[0].split(""), true)
-				cmd.next = 'tut 0';
+				animateNarration(tutorial[0].split(""))
+				//cmd.next = 'tut 0';
 				cmd.ps = '(enter to continue)';
 			}
 			if (cmd[1]) {
@@ -58,17 +85,14 @@ $(document).ready(function () {
 		options: [1],
 		help: 'Game tutorial'
 	});
+	$ptty.run_command("tut",true);
 
-	function animateNarration(text, first){
+	function animateNarration(text){
 		var typebox = $('<span class="color-green"></span>').appendTo('.content .cmd_out:last');
-		if (first){
-			typebox.html("");
-		} else {
-			typebox.html(text.shift());
-		}
+		typebox.html(text.shift());
 		setTimeout(function(){
 			if(text.length !== 0){
-				animateNarration(text, false);
+				animateNarration(text);
 			} else {
 				//done
 				console.log("DONE")
