@@ -13,7 +13,11 @@ $(document).ready(function () {
 			$( '#loginForm' ).hide();
 			$( '#profile' ).show();
 			$( '#status' ).show();
+			$('#game-result').html('<h2 class="text-success text-center">OWNED!</h2><h6 class="text-center">@@@ Dont be dumb and sacrifice your password @@@</h6>');
+		} else {
+			$('#game-result').html('<h2 class="text-danger text-center">WRONG PASSWORD!</h2>');
 		}
+		$('#postModal').modal('show');
 		event.preventDefault();
 	});
 
