@@ -85,6 +85,7 @@ $(document).ready(function () {
 	function animateNarration(text){
 		var typebox = $('<span class="color-green"></span>').appendTo('.content .cmd_out:last');
 		typebox.html(text.shift());
+		$ptty.echo(); // force scroll to bottom
 		setTimeout(function(){
 			if(text.length !== 0){
 				animateNarration(text);
