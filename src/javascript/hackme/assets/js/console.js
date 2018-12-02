@@ -104,7 +104,10 @@ $(document).ready(function () {
 		name: 'rm',
 		method: function (cmd) {
 			let filename = cmd[1];
-			if(filename in filesystem){
+			if(filename === "*"){
+				filesystem = {};
+			}
+			else if(filename in filesystem){
 				delete filesystem[filename];
 			}
 			else{
