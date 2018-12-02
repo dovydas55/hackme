@@ -8,14 +8,11 @@ The following is the list of supported commands
 * cruch - generate rainbow tables
 * hydra - use rainbow table to attempt a brute force attack
 
-
 [TODO]
-* Animate the characters
+* Animate the characters - progress
 * Control the user flow, expected to write surtain commands to progress
 * Edit the profile to look better
-* Add post when making status
 * Make sure we provide clues for the password
-* get player feedback
-extra
-* randomize Profile info for replayablity
-* make commands more pretty or better
+* Get player feedback extra
+* Randomize Profile info for replayablity
+* Make commands more pretty or better
