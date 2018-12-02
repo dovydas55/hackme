@@ -45,7 +45,8 @@ $(document).ready(function () {
 					var results = generatePasswords();
 					cmd.out = `[+] Generating dictionary... \n[+] Sorting list and removing dublicate... \n[+] Saving dictionary to ${results.filename}, counting ${results.found} words.`;
 					cmd.ps = cmd.next = null; // end game.
-					story();
+					console.log('>>>>>>>>Dome')
+					whereInStory++;
 				}
 			}
 			$ptty.set_command_option(cmd);

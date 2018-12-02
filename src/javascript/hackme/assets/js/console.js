@@ -23,82 +23,77 @@ var tutorial = {
 	21: " #Execute the following command *hydra generatedfile.txt*",
 }
 
-function story(last = ""){
-	switch(whereInStory) {
+function story(last = "") {
+	switch (whereInStory) {
 		case 0: $ptty.run_command("tut 0", true); whereInStory++; break;
 		case 1:
-			if(last === "touch createme.txt"){
+			if (last === "touch createme.txt") {
 				whereInStory++;
 				$ptty.run_command("tut 1", true);
 			}
 			break;
 		case 2:
-			if(last === "ls"){
+			if (last === "ls") {
 				whereInStory++;
 				$ptty.get_terminal('.input').hide();
-				setTimeout(function(){
+				setTimeout(function () {
 					$ptty.run_command("tut 2", true);
 				}, 300);
 			}
 			break;
 		case 3:
-			if(last === "rm createme.txt")
-			{
+			if (last === "rm createme.txt") {
 				whereInStory++;
 				$ptty.get_terminal('.input').hide();
-				setTimeout(function(){
+				setTimeout(function () {
 					$ptty.run_command("tut 3", true);
 				}, 300);
 			}
 			break;
 		case 4:
-			if(last === "ls")
-			{
+			if (last === "ls") {
 				whereInStory++;
 				$ptty.get_terminal('.input').hide();
-				setTimeout(function(){
+				setTimeout(function () {
 					$ptty.run_command("tut 4", true);
 				}, 300);
 			}
 			break;
 		case 5:
-			if(last === "help")
-			{
+			if (last === "help") {
 				whereInStory++;
 				$ptty.get_terminal('.input').hide();
-				setTimeout(function(){
+				setTimeout(function () {
 					$ptty.run_command("tut 5", true);
 				}, 300);
 			}
 			break;
 		case 14:
-			if(last === "cupp")
-			{
+			if (last === "cupp") {
 				console.log("Running Cupp");
-				whereInStory++;
 			}
 			break;
 		case 15:
 			console.log("Cupp done");
-			setTimeout(function(){
+			setTimeout(function () {
 				$ptty.run_command("tut 14", true);
 			}, 300);
-		break;
+			break;
 	}
 }
-var whereInStory = 0;
+var whereInStory = 5;
 $(document).ready(function () {
 	filesystem = {};
 	$ptty = $('#terminal').Ptty({
-		ps:"root@kali-rolling:~#",
+		ps: "root@kali-rolling:~#",
 		i18n: {
-			welcome: `Kali GNU/Linux Rolling kali-rolling tty3<br>Last login: ${new Date().toISOString().slice(0,19)} from 192.168.122.1 on pts/2<br>Linux kali-rolling 4.4.0-kali1-amd4`,
+			welcome: `Kali GNU/Linux Rolling kali-rolling tty3<br>Last login: ${new Date().toISOString().slice(0, 19)} from 192.168.122.1 on pts/2<br>Linux kali-rolling 4.4.0-kali1-amd4`,
 		},
-		after_cmd: function(cmd){
+		after_cmd: function (cmd) {
 			var last = $ptty.get_command_option('last');
 			var args = last.split(' ');
 			var lastCommand = args[0];
-			if(lastCommand === "tut") return cmd;
+			if (lastCommand === "tut") return cmd;
 
 			story(last);
 			return cmd;
@@ -139,14 +134,14 @@ $(document).ready(function () {
 		options: [1],
 		help: 'Game tutorial'
 	});
-	$ptty.run_command("tut",true);
+	$ptty.run_command("tut", true);
 
-	function animateNarration(text){
+	function animateNarration(text) {
 		var typebox = $('<span class="color-green"></span>').appendTo($ptty.get_terminal('.content').find('.cmd_out:last'));
 		typebox.html(text.shift());
 		$ptty.echo(); // force scroll to bottom
-		setTimeout(function(){
-			if(text.length !== 0){
+		setTimeout(function () {
+			if (text.length !== 0) {
 				animateNarration(text);
 			} else {
 				//done
@@ -168,8 +163,7 @@ $(document).ready(function () {
 		name: 'touch',
 		method: function (cmd) {
 			let filename = cmd[1];
-			if (filename)
-			{
+			if (filename) {
 				filesystem[filename] = "";
 			}
 			return cmd;
@@ -182,14 +176,14 @@ $(document).ready(function () {
 		name: 'rm',
 		method: function (cmd) {
 			let filename = cmd[1];
-			if(filename === "*"){
+			if (filename === "*") {
 				filesystem = {};
 			}
-			else if(filename in filesystem){
+			else if (filename in filesystem) {
 				delete filesystem[filename];
 			}
-			else{
-				cmd.out = "cat: "+filename+": no such file";
+			else {
+				cmd.out = "cat: " + filename + ": no such file";
 			}
 
 			return cmd;
@@ -202,11 +196,11 @@ $(document).ready(function () {
 		name: 'cat',
 		method: function (cmd) {
 			let filename = cmd[1];
-			if(filename in filesystem){
+			if (filename in filesystem) {
 				cmd.out = filesystem[filename];
 			}
-			else{
-				cmd.out = "cat: "+filename+": no such file";
+			else {
+				cmd.out = "cat: " + filename + ": no such file";
 			}
 			return cmd;
 		},
