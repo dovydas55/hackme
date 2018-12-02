@@ -22,6 +22,70 @@ var tutorial = {
 	20: " #To do that you can use a tool called *hydra*",
 	21: " #Execute the following command *hydra generatedfile.txt*",
 }
+
+function story(last = ""){
+	switch(whereInStory) {
+		case 0: $ptty.run_command("tut 0", true); whereInStory++; break;
+		case 1:
+			if(last === "touch createme.txt"){
+				whereInStory++;
+				$ptty.run_command("tut 1", true);
+			}
+			break;
+		case 2:
+			if(last === "ls"){
+				whereInStory++;
+				$ptty.get_terminal('.input').hide();
+				setTimeout(function(){
+					$ptty.run_command("tut 2", true);
+				}, 300);
+			}
+			break;
+		case 3:
+			if(last === "rm createme.txt")
+			{
+				whereInStory++;
+				$ptty.get_terminal('.input').hide();
+				setTimeout(function(){
+					$ptty.run_command("tut 3", true);
+				}, 300);
+			}
+			break;
+		case 4:
+			if(last === "ls")
+			{
+				whereInStory++;
+				$ptty.get_terminal('.input').hide();
+				setTimeout(function(){
+					$ptty.run_command("tut 4", true);
+				}, 300);
+			}
+			break;
+		case 5:
+			if(last === "help")
+			{
+				whereInStory++;
+				$ptty.get_terminal('.input').hide();
+				setTimeout(function(){
+					$ptty.run_command("tut 5", true);
+				}, 300);
+			}
+			break;
+		case 14:
+			if(last === "cupp")
+			{
+				console.log("Running Cupp");
+				whereInStory++;
+			}
+			break;
+		case 15:
+			console.log("Cupp done");
+			setTimeout(function(){
+				$ptty.run_command("tut 14", true);
+			}, 300);
+		break;
+	}
+}
 var whereInStory = 0;
 $(document).ready(function () {
 	filesystem = {};
@@ -36,64 +100,7 @@ $(document).ready(function () {
 			var lastCommand = args[0];
 			if(lastCommand === "tut") return cmd;
 
-			switch(whereInStory){
-				case 0: $ptty.run_command("tut 0", true); whereInStory++; break;
-				case 1:
-					if(last === "touch createme.txt"){
-						whereInStory++;
-						$ptty.run_command("tut 1", true);
-					}
-					break;
-				case 2:
-					if(last === "ls"){
-						whereInStory++;
-						$ptty.get_terminal('.input').hide();
-						setTimeout(function(){
-							$ptty.run_command("tut 2", true);
-						}, 300);
-					}
-					break;
-				case 3:
-					if(last === "rm createme.txt")
-					{
-						whereInStory++;
-						$ptty.get_terminal('.input').hide();
-						setTimeout(function(){
-							$ptty.run_command("tut 3", true);
-						}, 300);
-					}
-					break;
-				case 4:
-					if(last === "ls")
-					{
-						whereInStory++;
-						$ptty.get_terminal('.input').hide();
-						setTimeout(function(){
-							$ptty.run_command("tut 4", true);
-						}, 300);
-					}
-					break;
-				case 5:
-					if(last === "help")
-					{
-						whereInStory++;
-						$ptty.get_terminal('.input').hide();
-						setTimeout(function(){
-							$ptty.run_command("tut 5", true);
-						}, 300);
-					}
-					break;
-				case 14:
-					if(last === "cupp")
-					{
-						whereInStory++;
-						//$ptty.get_terminal('.input').hide();
-						//setTimeout(function(){
-						//	$ptty.run_command("tut 15", true);
-						//}, 300);
-					}
-					break;
-			}
+			story(last);
 			return cmd;
 		}
 	});
@@ -115,11 +122,12 @@ $(document).ready(function () {
 					animateNarration(tutorial[num].split(""))
 
 					if (5 < num && num < 14) {
-						console.log(num);
 						whereInStory++;
 						cmd.ps = '(enter to continue)';
 						cmd.next = `tut ${num}`;
-					}
+					}/*else if(num == 14){
+						whereInStory++;
+					}*/
 				} else {
 					cmd.out = `DONE`;
 					cmd.ps = cmd.next = null; // end game.
@@ -144,7 +152,7 @@ $(document).ready(function () {
 				//done
 				$ptty.get_terminal('.input').show().focus();
 			}
-		}, 30);
+		}, 3);
 	}
 
 	$ptty.register('command', {
