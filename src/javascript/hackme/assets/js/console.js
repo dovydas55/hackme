@@ -31,25 +31,20 @@ $(document).ready(function () {
 			welcome: `Kali GNU/Linux Rolling kali-rolling tty3<br>Last login: ${new Date().toISOString().slice(0,19)} from 192.168.122.1 on pts/2<br>Linux kali-rolling 4.4.0-kali1-amd4`,
 		},
 		after_cmd: function(cmd){
-
 			var last = $ptty.get_command_option('last');
 			var args = last.split(' ');
 			var lastCommand = args[0];
 			if(lastCommand === "tut") return;
-			//if(lastCommand === "") return;
 			switch(whereInStory){
 				case 0: $ptty.run_command("tut 0", true); whereInStory++; break;
 				case 1:
-					if(last === "touch createme.txt")
-					{
+					if(last === "touch createme.txt"){
 						whereInStory++;
 						$ptty.run_command("tut 1", true);
 					}
 					break;
 				case 2:
-					console.log(`"${last}"`, `"ls"`);
-					if(last === "ls")
-					{
+					if(last === "ls"){
 						whereInStory++;
 						$ptty.run_command("tut 2", true);
 					}
@@ -96,7 +91,7 @@ $(document).ready(function () {
 			} else {
 				//done
 				console.log("DONE")
-				$ptty.get_terminal('.input').show();
+				$ptty.get_terminal('.input').show().focus();
 			}
 		}, 30);
 	}

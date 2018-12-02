@@ -16,3 +16,4 @@ The following is the list of supported commands
 * Get player feedback extra
 * Randomize Profile info for replayablity
 * Make commands more pretty or better
+* Add comments
