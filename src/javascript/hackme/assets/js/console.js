@@ -24,6 +24,9 @@ var tutorial = {
 }
 
 function story(last = "") {
+	var args = last.split(' ');
+	var lastCommand = args[0];
+
 	switch (whereInStory) {
 		case 0: $ptty.run_command("tut 0", true); whereInStory++; break;
 		case 1:
@@ -79,9 +82,26 @@ function story(last = "") {
 				$ptty.run_command("tut 14", true);
 			}, 300);
 			break;
+		case 17:
+			if (last === "ls") {
+				whereInStory++;
+				setTimeout(function () {
+					$ptty.run_command("tut 17", true);
+				}, 300);
+			}
+			break;
+		case 18:
+			if (lastCommand === "cat") {
+				whereInStory++;
+				setTimeout(function () {
+					$ptty.run_command("tut 18", true);
+				}, 300);
+			}
+			break;
+
 	}
 }
-var whereInStory = 5;
+var whereInStory = 0;
 $(document).ready(function () {
 	filesystem = {};
 	$ptty = $('#terminal').Ptty({
@@ -116,15 +136,13 @@ $(document).ready(function () {
 					$ptty.get_terminal('.content').append('<div><div class="cmd_out"></div></div>')
 					animateNarration(tutorial[num].split(""))
 
-					if (5 < num && num < 14) {
+					console.log(num)
+					if ((5 < num && num < 14) || num === 15 || num === 16 || ( 19 <= num && num <= 21)) {
 						whereInStory++;
 						cmd.ps = '(enter to continue)';
 						cmd.next = `tut ${num}`;
-					}/*else if(num == 14){
-						whereInStory++;
-					}*/
+					}
 				} else {
-					cmd.out = `DONE`;
 					cmd.ps = cmd.next = null; // end game.
 				}
 			}
