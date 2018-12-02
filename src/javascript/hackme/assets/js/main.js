@@ -36,7 +36,7 @@ function AddPost(text) {
 		<div class="panel-body">
 			<p>${text}</p>
 			<hr>
-			<form>
+			<form onsubmit="return false">
 				<div class="input-group">
 					<div class="input-group-btn">
 						<button class="btn btn-default">+1</button><button class="btn btn-default"><i class="glyphicon glyphicon-share"></i></button>
