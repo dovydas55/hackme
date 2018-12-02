@@ -91,7 +91,6 @@ $(document).ready(function () {
 				animateNarration(text);
 			} else {
 				//done
-				console.log("DONE")
 				$ptty.get_terminal('.input').show().focus();
 			}
 		}, 30);
