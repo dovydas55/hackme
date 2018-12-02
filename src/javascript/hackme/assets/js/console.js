@@ -83,6 +83,16 @@ $(document).ready(function () {
 						}, 300);
 					}
 					break;
+				case 14:
+					if(last === "cupp")
+					{
+						whereInStory++;
+						//$ptty.get_terminal('.input').hide();
+						//setTimeout(function(){
+						//	$ptty.run_command("tut 15", true);
+						//}, 300);
+					}
+					break;
 			}
 			return cmd;
 		}
@@ -103,8 +113,13 @@ $(document).ready(function () {
 					$ptty.get_terminal('.input').hide();
 					$ptty.get_terminal('.content').append('<div><div class="cmd_out"></div></div>')
 					animateNarration(tutorial[num].split(""))
-					//cmd.ps = '(enter to continue)';
-					//cmd.next = `tut ${num + 1}`;
+
+					if (5 < num && num < 14) {
+						console.log(num);
+						whereInStory++;
+						cmd.ps = '(enter to continue)';
+						cmd.next = `tut ${num}`;
+					}
 				} else {
 					cmd.out = `DONE`;
 					cmd.ps = cmd.next = null; // end game.
