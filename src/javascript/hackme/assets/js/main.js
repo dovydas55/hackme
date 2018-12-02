@@ -22,7 +22,7 @@ $(document).ready(function () {
 	});
 
 	AddPost("This election is a total sham and a travesty. We are not a democracy!");
-	AddPost("I have never seen a thin person drinking Diet Code");
+	AddPost("I have never seen a thin person drinking Diet Coke");
 	AddPost("The conxept of global warming was created by and for the Chinese in order to make U.S. manufacturing non-competitive");
 	AddPost("People say my wall idea is crazy. China built a wall, and guess how many Mexicans they have. Checkmate.");
 	AddPost("Sorry losers and haters, but my I.Q. is one of the highest -and you all know it. Please dont feel so stupid or insecure, it's not your fault");
