@@ -90,7 +90,10 @@ $(document).ready(function () {
 		name: 'touch',
 		method: function (cmd) {
 			let filename = cmd[1];
-			filesystem[filename] = "";
+			if (filename)
+			{
+				filesystem[filename] = "";
+			}
 			return cmd;
 		},
 		options: [1],
