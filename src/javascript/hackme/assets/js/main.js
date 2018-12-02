@@ -15,7 +15,7 @@ $(document).ready(function () {
 			$( '#status' ).show();
 			$('#game-result').html('<h2 class="text-success text-center">OWNED!</h2><h6 class="text-center">@@@ Dont be dumb and sacrifice your password @@@</h6>');
 		} else {
-			$('#game-result').html('<h2 class="text-danger text-center">WRONG PASSWORD!</h2>');
+			$('#game-result').html('<h2 class="text-danger text-center">WRONG USERNAME OR PASSWORD!</h2>');
 		}
 		$('#postModal').modal('show');
 		event.preventDefault();
@@ -35,7 +35,7 @@ function AddPost(text) {
 	$(`<div class="panel panel-post">
 		<div class="panel-heading">
 			<img src="assets/img/bg_5.jpg" class="img-circle pull-left">
-			<a>Harrison Murray</a>
+			<a>Roxy Angel</a>
 		</div>
 		<div class="panel-body">
 			<p>${text}</p>
