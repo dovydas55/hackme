@@ -17,8 +17,13 @@ $(document).ready(function () {
 		event.preventDefault();
 	});
 
-	AddPost("This is working!!");
-	AddPost("testing Again");
+	AddPost("This election is a total sham and a travesty. We are not a democracy!");
+	AddPost("I have never seen a thin person drinking Diet Code");
+	AddPost("The conxept of global warming was created by and for the Chinese in order to make U.S. manufacturing non-competitive");
+	AddPost("People say my wall idea is crazy. China built a wall, and guess how many Mexicans they have. Checkmate.");
+	AddPost("Sorry losers and haters, but my I.Q. is one of the highest -and you all know it. Please dont feel so stupid or insecure, it's not your fault");
+	AddPost("@Jesus, such a loser. Washes people's feet. Very dirty. Would be nothing without daddy. Mom wasn't a virgin, needs to be said. SAD.");
+	AddPost("Look folks we're going to build a wall made of legos so people will step on them and turn back.");
 });
 
 
