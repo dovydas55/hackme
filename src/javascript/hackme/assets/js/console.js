@@ -4,7 +4,7 @@ var tutorial = {
 	2: " #You can browse the file system by typing in *ls*",
 	3: " #Now lets delete the file *createme.txt* using remove command by executing *rm createme.txt*",
 	4: " #Make sure that the file has been deleted by typing in *ls*",
-	5: " #If you get in trouble juts type in *help* to get more details about available commands",
+	5: " #If you get in trouble just type in *help* to get more details about available commands",
 	6: " #Ok since you have familiarized yourself with some basics, lets get into more serious hacking!",
 	7: " #In order to hack into this account we need to figure out the victims *username* and *password*",
 	8: " #To figure out the victims username is easy - *just look around their social media profile and see what you can find...*",
@@ -34,7 +34,8 @@ $(document).ready(function () {
 			var last = $ptty.get_command_option('last');
 			var args = last.split(' ');
 			var lastCommand = args[0];
-			if(lastCommand === "tut") return;
+			if(lastCommand === "tut") return cmd;
+
 			switch(whereInStory){
 				case 0: $ptty.run_command("tut 0", true); whereInStory++; break;
 				case 1:
@@ -46,10 +47,44 @@ $(document).ready(function () {
 				case 2:
 					if(last === "ls"){
 						whereInStory++;
-						$ptty.run_command("tut 2", true);
+						$ptty.get_terminal('.input').hide();
+						setTimeout(function(){
+							$ptty.run_command("tut 2", true);
+						}, 300);
+					}
+					break;
+				case 3:
+					if(last === "rm createme.txt")
+					{
+						whereInStory++;
+						$ptty.get_terminal('.input').hide();
+						setTimeout(function(){
+							$ptty.run_command("tut 3", true);
+						}, 300);
+					}
+					break;
+				case 4:
+					if(last === "ls")
+					{
+						whereInStory++;
+						$ptty.get_terminal('.input').hide();
+						setTimeout(function(){
+							$ptty.run_command("tut 4", true);
+						}, 300);
+					}
+					break;
+				case 5:
+					if(last === "help")
+					{
+						whereInStory++;
+						$ptty.get_terminal('.input').hide();
+						setTimeout(function(){
+							$ptty.run_command("tut 5", true);
+						}, 300);
 					}
 					break;
 			}
+			return cmd;
 		}
 	});
 	$ptty.echo("<br>")
@@ -66,9 +101,10 @@ $(document).ready(function () {
 				var num = parseInt(cmd[1], 10) + 1;
 				if (num < Object.keys(tutorial).length) {
 					$ptty.get_terminal('.input').hide();
+					$ptty.get_terminal('.content').append('<div><div class="cmd_out"></div></div>')
 					animateNarration(tutorial[num].split(""))
-					cmd.ps = '(enter to continue)';
-					cmd.next = `tut ${num + 1}`;
+					//cmd.ps = '(enter to continue)';
+					//cmd.next = `tut ${num + 1}`;
 				} else {
 					cmd.out = `DONE`;
 					cmd.ps = cmd.next = null; // end game.
@@ -83,7 +119,7 @@ $(document).ready(function () {
 	$ptty.run_command("tut",true);
 
 	function animateNarration(text){
-		var typebox = $('<span class="color-green"></span>').appendTo('.content .cmd_out:last');
+		var typebox = $('<span class="color-green"></span>').appendTo($ptty.get_terminal('.content').find('.cmd_out:last'));
 		typebox.html(text.shift());
 		setTimeout(function(){
 			if(text.length !== 0){
