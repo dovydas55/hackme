@@ -11,7 +11,7 @@ String.raw`
 `;
 
 $(document).ready(function () {
-	var introText = `${cupplogo}[+] WELCOME TO -CUPP- \n[+] Insert information about the victim to make a dictionary \n[+] If you dont know all of the information, just hit ENTER when asked \n`;
+	var introText = `${cupplogo}[+] WELCOME TO -CUPP- \n[+] Insert information about the victim to make a dictionary \n[+] If you dont know all of the information, just hit ENTER to leave empty when asked \n`;
 	var questions = {
 		0: "> First Name: ",
 		1: "> Surname: ",
@@ -45,7 +45,6 @@ $(document).ready(function () {
 					var results = generatePasswords();
 					cmd.out = `[+] Generating dictionary... \n[+] Sorting list and removing dublicate... \n[+] Saving dictionary to ${results.filename}, counting ${results.found} words.`;
 					cmd.ps = cmd.next = null; // end game.
-					console.log('>>>>>>>>Dome')
 					whereInStory++;
 				}
 			}
@@ -60,7 +59,7 @@ $(document).ready(function () {
 		var filename = 'passwords.txt';
 		Object.keys(answers).forEach(key => answers[key] === undefined ? delete answers[key] : '');
 		if (answers["0"]){
-			filename = answers[0] + '.txt';
+			filename = answers[0].toLowerCase() + '.txt';
 		}
 		var results = perm(Object.values(answers));
 		filesystem[filename] = results.set;

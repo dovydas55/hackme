@@ -9,7 +9,7 @@ $(document).ready(function () {
 	});
 
 	$( '#loginForm' ).submit(function( event ) {
-		if($('#password').val() === atob($('#ssid').val())){
+		if($('#password').val() === atob($('#ssid').val()) && $('#username').val() === atob($('#email').val())){
 			$( '#loginForm' ).hide();
 			$( '#profile' ).show();
 			$( '#status' ).show();

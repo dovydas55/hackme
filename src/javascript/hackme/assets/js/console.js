@@ -4,7 +4,7 @@ var tutorial = {
 	2: " #You can browse the file system by typing in *ls*",
 	3: " #Now lets delete the file *createme.txt* using remove command by executing *rm createme.txt*",
 	4: " #Make sure that the file has been deleted by typing in *ls*",
-	5: " #If you get in trouble just type in *help* to get more details about available commands",
+	5: " #Remember you can always use help to get more details about available commands. Type *help* to see commands",
 	6: " #Ok since you have familiarized yourself with some basics, lets get into more serious hacking!",
 	7: " #In order to hack into this account we need to figure out the victims *username* and *password*",
 	8: " #To figure out the victims username is easy - *just look around their social media profile and see what you can find...*",
@@ -13,14 +13,14 @@ var tutorial = {
 	11: " #Very often people tend to expose to much of their personal information on social media platforms",
 	12: " #Without even realizing that they have made their password available for everyone to see...",
 	13: " #Start by looking over the public profile and learning as much as possible about your target",
-	14: " #Now lets use a tool called *cupp* to generate possible passwords for the attack",
+	14: " #Now lets use a tool called cupp to generate possible passwords for the attack. Type *cupp* to start",
 	15: " #You just generated a dictionary that potentially holds your victims password!",
 	16: " #Lets see how it looks like :D",
 	17: " #Type *ls* to list the files in your current working directory",
-	18: " #Type *cat filename.txt* to view the file contents",
+	18: " #Type *cat <filename>.txt* to view the file contents",
 	19: " #Now lets use these passwords to attempt a bruteforce attack to your victims login!!",
 	20: " #To do that you can use a tool called *hydra*",
-	21: " #Execute the following command *hydra generatedfile.txt*",
+	21: " #Execute the following command *hydra <filename>.txt*"
 }
 
 function story(last = "") {

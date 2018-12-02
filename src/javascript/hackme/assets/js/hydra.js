@@ -43,7 +43,6 @@ var hydraFunc = function (cmd) {
 			setTimeout(function(){
 				let pass =  passes.pop()
 				if(pass === atob($('#ssid').val())) {
-					$('#password').val(pass)
 					$ptty.echo(`Password found!! \"${pass}\"`);
 					$ptty.get_terminal('.input').show();
 					return;
@@ -53,7 +52,7 @@ var hydraFunc = function (cmd) {
             		return;
 				}
 
-	            $ptty.echo(`[ATTEMPT] - pass \"${pass}\" ${len-passes.length}/${len}`);
+	            $ptty.echo(`[ATTEMPT] - pass \"${pass}\" ${len-passes.length}/${len} - 403`);
 	            run(passes);
 	        }, 150);
 		}(passwords))
