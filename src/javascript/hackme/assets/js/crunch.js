@@ -69,11 +69,20 @@ $(document).ready(function () {
 	function perm(xs) {
 		let ret = [];
 		for (let i = 0; i < xs.length; i = i + 1) {
+			ret.push(xs[i][0].toLowerCase() + xs[i].substr(1).toUpperCase())
+			ret.push(xs[i][0].toUpperCase() + xs[i].substr(1).toLowerCase())
 			for (let j = 0; j < xs.length; j = j + 1) {
 				if(i === j){
 					continue;
 				}
-				ret.push(xs[i] + xs[j])
+				ret.push(xs[i].toLowerCase() + xs[j].toLowerCase())
+				ret.push(xs[i].toLowerCase() + xs[j].toUpperCase())
+				ret.push(xs[i].toUpperCase() + xs[j].toLowerCase())
+				ret.push(xs[i].toUpperCase() + xs[j].toUpperCase())
+				if (xs[i].length > 0 && xs[j].length > 0){
+					ret.push(xs[i][0].toLowerCase() + xs[i].substr(1).toUpperCase() + xs[j][0].toLowerCase() + xs[j].substr(1).toUpperCase())
+					ret.push(xs[i][0].toUpperCase() + xs[i].substr(1).toLowerCase() + xs[j][0].toUpperCase() + xs[j].substr(1).toLowerCase())
+				}
 			}
 		}
 		return {set: ret.join("\n"), len: ret.length};
