@@ -16,4 +16,37 @@ $(document).ready(function () {
 		}
 		event.preventDefault();
 	});
+
+	AddPost("This is working!!");
+	AddPost("testing Again");
 });
+
+
+function AddPost(text) {
+	$(`<div class="panel panel-post">
+		<div class="panel-heading">
+			<img src="assets/img/bg_5.jpg" class="img-circle pull-left">
+			<a>Harrison Murray</a>
+		</div>
+		<div class="panel-body">
+			<p>${text}</p>
+			<hr>
+			<form>
+				<div class="input-group">
+					<div class="input-group-btn">
+						<button class="btn btn-default">+1</button><button class="btn btn-default"><i class="glyphicon glyphicon-share"></i></button>
+					</div>
+					<input class="form-control" placeholder="Add a comment.." type="text">
+				</div>
+			</form>
+		</div>
+	</div>`).prependTo('#newsfeed');
+}
+
+
+function SubmitStatus(){
+	var textField = $('#status .form-control');
+	AddPost(textField.val());
+	textField.val("")
+	return false;
+}
