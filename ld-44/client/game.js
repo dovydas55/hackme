@@ -16,7 +16,6 @@ websocket.onerror = (err) => {
 websocket.onmessage = (msg) => {
 	switch (msg.data) {
 		case 'left':
-			console.log('left');
 			leftArrowPressed();
 			break;
 		case 'right':
@@ -55,28 +54,20 @@ function moveSelection(event) {
 	if(!event) return
 	switch (event.keyCode) {
 		case 37:
-			leftArrowPressed();
 			websocket.send('left');
 			break;
-
 		case 39:
-			rightArrowPressed();
 			websocket.send('right');
 			break;
-
 		case 38:
-			upArrowPressed();
 			websocket.send('up');
 			break;
-
 		case 40:
-			downArrowPressed();
 			websocket.send('down');
 			break;
 	}
 };
 
 function gameLoop() {
-	moveSelection();
 	setTimeout("gameLoop()", 10);
 }
