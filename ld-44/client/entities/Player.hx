@@ -6,7 +6,7 @@ import h2d.Scene;
 
 class Player extends Entity {
     
-    var uuid : String;
+    public var uuid : String;
     var player : Object;
 
     public function new(uuid : String, s2d : Scene) {

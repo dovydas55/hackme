@@ -3,6 +3,7 @@ import hxd.Key;
 import h2d.Anim;
 import h2d.Bitmap;
 import h2d.Tile;
+import entities.Entity;
 import entities.Player;
 
 class Main extends App {
@@ -10,6 +11,7 @@ class Main extends App {
     var bmp : Bitmap;
     var anim : Anim;
     var players : Array<Player>;
+    var entities : Array<Entity>;
     var playerid : String;
 
     override function init() {
@@ -50,8 +52,12 @@ class Main extends App {
 
         handleInput();
 
-        for (var player in players) {
-            player.update(du);
+        for (player in players) {
+            // do nothing for now when it's diagonal input
+            // TODO: change this later
+            if (!(player.dx != 0 && player.dy != 0)) {
+                player.update(du);
+            }
         }
     }
 
@@ -61,26 +67,27 @@ class Main extends App {
         // move this later into a proper input handler or manager
         var dx = 0;
         var dy = 0;
+
         if (Key.isDown(Key.UP) || Key.isDown(Key.W)) {
-            dy = -1;
+            dy -= 1;
         }
         if (Key.isDown(Key.DOWN) || Key.isDown(Key.S)) {
-            dy = 1;
+            dy += 1;
         }
         if (Key.isDown(Key.LEFT) || Key.isDown(Key.A)) {
-            dx = -1;
+            dx -= 1;
         }
         if (Key.isDown(Key.RIGHT) || Key.isDown(Key.D)) {
-            dx = 1;          
+            dx += 1;          
         }
-
+        
         var player = getPlayer(playerid);
         player.dx = dx;
         player.dy = dy;
     }
 
     function getPlayer(uuid : String) : Player {
-        return new Player(uuid, s2d);
+        return players.filter(function (p) return p.uuid == uuid)[0];
     }
 
     static function main() {
