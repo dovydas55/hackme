@@ -1,5 +1,6 @@
-let websocket = new WebSocket("ws://localhost:8080/ws")
-console.log("Attempting web socket connection")
+const hostname = window.location.hostname;
+let websocket = new WebSocket("ws://"+hostname+":8080/ws")
+console.log("Attempting web socket connection at "+ hostname)
 
 websocket.onopen = () => {
 	console.log("Succesfully connected");
@@ -40,7 +41,6 @@ websocket.onmessage = (msg) => {
             }
 			break;
 		case 'USER_MOVE_EVENT':
-            console.log(response)
             move(response.event.user_id, response.event.direction);
             break;
 	}
@@ -51,7 +51,6 @@ function move(playerId, movement)
     var player = players.find(function(i){
         return i.id == playerId;
     })
-    console.log(player)
     if(!player) return;
     switch (movement)
     {
@@ -106,20 +105,17 @@ function moveSelection(event) {
 };
 
 
-var lastTime = null;
-var cx;
-const canvas = document.querySelector("canvas");
-function frame(time) {
-    if(lastTime != null) {
-        update(Math.min(100, time - lastTime) / 1000);
-    }
-    lastTime = time;
-    requestAnimationFrame(frame);
+
+
+function fixedUpdate(dt)
+{
+
 }
 
-function update(dt)
+function render(dt)
 {
     cx.clearRect(0,0, canvas.width, canvas.height);
+
     for(index = 0; index < players.length; ++index)
     {
         let player = players[index];
@@ -128,6 +124,36 @@ function update(dt)
         cx.fillStyle = player.color;
         cx.arc(player.x, player.y, 20, 0, Math.PI *2);
         cx.fill();
+    }
+
+}
+
+var now;
+const renderFps = 30;
+var renderThen = Date.now();
+var renderDelta;
+const updateFps = 60;
+var updateThen = Date.now();
+var updateDelta;
+var lastTime = null;
+var cx;
+const canvas = document.querySelector("canvas");
+function frame(time) {
+    requestAnimationFrame(frame);
+    now = Date.now();
+
+    updateDelta = now - updateThen;
+    if(updateDelta > (1000 / updateFps))
+    {
+        fixedUpdate(updateDelta);
+        updateThen = now - (updateDelta % (1000 / updateFps));
+    }
+
+    renderDelta = now - renderThen;
+    if( renderDelta > (1000/ renderFps))
+    {
+        render(renderDelta);
+        renderThen = now - (renderDelta % (1000 / renderFps));
     }
 }
 
