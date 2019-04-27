@@ -1,16 +1,18 @@
+package ld_44;
+
 import hxd.App;
 import hxd.Key;
 import h2d.Anim;
 import h2d.Bitmap;
-import h2d.Graphics;
-import h2d.Object;
 import h2d.Tile;
+import entities.Player;
 
 class Main extends App {
 
     var bmp : Bitmap;
     var anim : Anim;
-    var player : Object;
+    var player : Player;
+    var players : Array<Player>;
 
     override function init() {
         // allocate a Texture with red color and creates a 100x100 Tile from it
@@ -35,37 +37,38 @@ class Main extends App {
         anim.x = s2d.width * 0.5;
         anim.y = s2d.height * 0.25;
 
-        player = initPlayer(s2d);
-    }
-
-    function initPlayer(s2d: h2d.Scene): Graphics {
-        var g = new Graphics(s2d);
-        g.beginFill(0xFFFFFF);
-        g.drawCircle(0, 0, 10, 20);
-        g.endFill();
-        return g;
+        player = new Player(0, s2d);
+        players = new Array<Player>();
+        players.push(player);
     }
 
     // on each frame
     override function update(dt:Float) {
-        // increment the display bitmap rotation by 0.1 radians
-        bmp.rotation += 0.1 * dt * 60;
-        handlePlayerMovement(dt);
-    }
+        // dt is the change in time in seconds
+        // assume 60 frames per second
+        // du is then the change in time unit
+        var du = dt * 60;
 
-    function handlePlayerMovement(dt:Float) {
+        // increment the display bitmap rotation by 0.1 radians
+        bmp.rotation += 0.1 * du;
+
+        // update player position
+        // move this later into a proper input handler or manager
+        var dx = 0;
+        var dy = 0;
         if (Key.isDown(Key.UP) || Key.isDown(Key.W)) {
-            player.y -= dt * 60;
+            dy = -1;
         }
         if (Key.isDown(Key.DOWN) || Key.isDown(Key.S)) {
-            player.y += dt * 60;
+            dy = 1;
         }
         if (Key.isDown(Key.LEFT) || Key.isDown(Key.A)) {
-            player.x -= dt * 60;
+            dx = -1;
         }
         if (Key.isDown(Key.RIGHT) || Key.isDown(Key.D)) {
-            player.x += dt * 60;            
+            dx = 1;          
         }
+        player.updatePlayerMovement(du, dx, dy);
     }
 
     static function main() {
