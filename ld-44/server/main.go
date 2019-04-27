@@ -3,9 +3,17 @@ package main
 import (
 	"log"
 	"net/http"
+	"sync"
 
 	"github.com/gorilla/websocket"
 )
+
+type concurrentSlice struct {
+	sync.RWMutex
+	items []*websocket.Conn
+}
+
+var clients concurrentSlice
 
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
@@ -20,7 +28,13 @@ func reader(conn *websocket.Conn) {
 			log.Println(err)
 			return
 		}
-		log.Println(string(p))
+		log.Println(string(p), messageType)
+		writeMessage(messageType, p)
+	}
+}
+
+func writeMessage(messageType int, p []byte) {
+	for _, conn := range clients.items {
 		if err := conn.WriteMessage(messageType, p); err != nil {
 			log.Println(err)
 			return
@@ -35,7 +49,8 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Println("Client succesfully connected")
-	reader(ws)
+	clients.append(ws)
+	go reader(ws)
 }
 
 func setupRoutes() {
@@ -45,4 +60,10 @@ func setupRoutes() {
 func main() {
 	setupRoutes()
 	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func (cs *concurrentSlice) append(item *websocket.Conn) {
+	cs.Lock()
+	defer cs.Unlock()
+	cs.items = append(cs.items, item)
 }
