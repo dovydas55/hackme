@@ -14,18 +14,27 @@ websocket.onerror = (err) => {
 }
 
 websocket.onmessage = (msg) => {
-	switch (msg.data) {
-		case 'left':
-			leftArrowPressed();
+	response = JSON.parse(msg.data)
+	switch (response.type) {
+		case 'USER_JOIN_EVENT':
+			console.log(response)
 			break;
-		case 'right':
-			rightArrowPressed();
-			break;
-		case 'up':
-			upArrowPressed();
-			break;
-		case 'down':
-			downArrowPressed();
+		case 'USER_MOVE_EVENT':
+			switch (response.event.direction) {
+				case 'left':
+					leftArrowPressed();
+					console.log(response)
+					break;
+				case 'right':
+					rightArrowPressed();
+					break;
+				case 'up':
+					upArrowPressed();
+					break;
+				case 'down':
+					downArrowPressed();
+					break;
+			}
 			break;
 	}
 }
