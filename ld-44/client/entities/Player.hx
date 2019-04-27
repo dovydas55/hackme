@@ -4,17 +4,17 @@ import h2d.Graphics;
 import h2d.Object;
 import h2d.Scene;
 
-class Player {
+class Player extends Entity {
     
-    var userId : Int;
+    var uuid : String;
     var player : Object;
 
-    public function new(userId : Int, s2d : Scene) {
-        this.userId = userId;
+    public function new(uuid : String, s2d : Scene) {
+        this.uuid = uuid;
         this.player = initPlayer(s2d);
     }
 
-    public function updatePlayerMovement(du:Float, dx : Float, dy : Float) {
+    public override function update(du:Float) {
         player.x += dx * du;
         player.y += dy * du;
     }
