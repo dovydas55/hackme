@@ -1,5 +1,3 @@
-package ld_44;
-
 import hxd.App;
 import hxd.Key;
 import h2d.Anim;
