@@ -9,8 +9,8 @@ class Main extends App {
 
     var bmp : Bitmap;
     var anim : Anim;
-    var player : Player;
     var players : Array<Player>;
+    var playerid : String;
 
     override function init() {
         // allocate a Texture with red color and creates a 100x100 Tile from it
@@ -35,9 +35,7 @@ class Main extends App {
         anim.x = s2d.width * 0.5;
         anim.y = s2d.height * 0.25;
 
-        player = new Player(0, s2d);
         players = new Array<Player>();
-        players.push(player);
     }
 
     // on each frame
@@ -50,6 +48,15 @@ class Main extends App {
         // increment the display bitmap rotation by 0.1 radians
         bmp.rotation += 0.1 * du;
 
+        handleInput();
+
+        for (var player in players) {
+            player.update(du);
+        }
+    }
+
+    function handleInput() {
+        
         // update player position
         // move this later into a proper input handler or manager
         var dx = 0;
@@ -66,7 +73,14 @@ class Main extends App {
         if (Key.isDown(Key.RIGHT) || Key.isDown(Key.D)) {
             dx = 1;          
         }
-        player.updatePlayerMovement(du, dx, dy);
+
+        var player = getPlayer(playerid);
+        player.dx = dx;
+        player.dy = dy;
+    }
+
+    function getPlayer(uuid : String) : Player {
+        return new Player(uuid, s2d);
     }
 
     static function main() {
