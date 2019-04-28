@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"math/rand"
 	"net/http"
 	"sync"
 	"time"
@@ -11,6 +12,9 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+const mapWidth = 1000
+const mapHeight = 1000
+
 //ResponseEvent ...
 type ResponseEvent struct {
 	Type   string      `json:"type"`
@@ -18,6 +22,7 @@ type ResponseEvent struct {
 	Event  interface{} `json:"event"`
 }
 
+//MoveRequestEvent ...
 type MoveRequestEvent struct {
 	Type   string `json:"type"`
 	UserID string `json:"user_id"`
@@ -29,6 +34,8 @@ type MoveRequestEvent struct {
 type User struct {
 	UserID    string `json:"user_id"`
 	Timestamp string `json:"timestamp"`
+	StartX    int    `json:"start_x"`
+	StartY    int    `json:"start_y"`
 }
 
 //Move ...
@@ -97,7 +104,6 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 	if userID == "" {
 		return
 	}
-
 	var usr []User
 	for _, allUsrs := range clients.usrs {
 		usr = append(usr, allUsrs.user)
@@ -135,9 +141,10 @@ func (cs *concurrentSlice) append(item *websocket.Conn) string {
 	usr := User{
 		UserID:    id.String(),
 		Timestamp: time.Now().String(),
+		StartX:    getRandomIntegerInRange(0, mapWidth),
+		StartY:    getRandomIntegerInRange(0, mapHeight),
 	}
 	cs.usrs = append(cs.usrs, userData{conn: item, user: usr})
-
 	return id.String()
 }
 
@@ -146,4 +153,9 @@ func (cs *concurrentSlice) deleteConnection(item *websocket.Conn) {
 	defer cs.Unlock()
 	i, _ := findUserID(item)
 	cs.usrs = append(cs.usrs[:i], cs.usrs[i+1:]...)
+}
+
+func getRandomIntegerInRange(min, max int) int {
+	rand.Seed(time.Now().UnixNano())
+	return rand.Intn(max-min) + min
 }
