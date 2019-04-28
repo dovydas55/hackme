@@ -14,10 +14,10 @@ import (
 //ResponseEvent ...
 type ResponseEvent struct {
 	Type   string      `json:"type"`
-	UserID string      `json:"user_id"`
 	Event  interface{} `json:"event"`
 }
 
+//MoveRequestEvent ...
 type MoveRequestEvent struct {
 	Type   string `json:"type"`
 	UserID string `json:"user_id"`
@@ -32,9 +32,15 @@ type User struct {
 }
 
 //Move ...
-type Move struct {
-	Direction string `json:"direction"`
+type MoveEvent struct {
 	UserID    string `json:"user_id"`
+	Dx     int    `json:"dx"`
+	Dy     int    `json:"dy"`
+}
+
+type JoinEvent struct {
+	UserID    string `json:"user_id"`
+	Users	  []User `json:"users"`
 }
 
 type userData struct {
@@ -65,6 +71,23 @@ func reader(conn *websocket.Conn) {
 			return
 		}
 		log.Println(json.Type, json.UserID, json.Dx, json.Dy)
+		/*i, userId := findUserID(conn)
+		if i < 0 {
+			return
+		}
+		response, responseErr := json.Marshal(ResponseEvent{
+			Type: "USER_MOVE_EVENT",
+			Event: MoveEvent{
+				UserID: userId,
+				Dx: json.Dx,
+				Dy: json.Dy,
+			},
+		})
+		if responseErr != nil {
+			log.Println(responseErr)
+			return
+		}
+		writeMessage(1, response)*/
 	}
 }
 
@@ -104,8 +127,10 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 	response, responseErr := json.Marshal(ResponseEvent{
 		Type:   "USER_JOIN_EVENT",
-		UserID: userID,
-		Event:  usr,
+		Event:  JoinEvent{
+			UserID: userID,
+			Users:usr,
+		},
 	})
 	if responseErr != nil {
 		log.Println(responseErr)
