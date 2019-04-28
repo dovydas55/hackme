@@ -42,10 +42,11 @@ class Main extends App {
                 switch (response.type)
                 {
                     case 'USER_JOIN_EVENT':
-                        trace(response.event);
+                        
                         // Set local player id when joining
-                        if (playerid == "") {
+                        if (playerid == null) {
                             playerid = response.user_id;
+                            trace("setting local user: " + playerid);
                         }
 
                         /*
@@ -66,6 +67,8 @@ class Main extends App {
                                 player.entity.x = user.start_x;
                                 player.entity.y = user.start_y;
                                 players.set(playerid, player);
+
+                                trace("Adding new player at (" + player.entity.x + ", " + player.entity.y + ")");
                             }
                         }
 
@@ -87,10 +90,10 @@ class Main extends App {
 		var tile = h2d.Tile.fromColor(0x00ff00, 16, 16);
         map = new TileGroup(tile, camera);
 
-        for (i in 0...1000)
-        {
-            map.add(Std.int(s2d.width * Math.random()), Std.int(s2d.height * Math.random()), tile);
-        }
+        // for (i in 0...1000)
+        // {
+        //     map.add(Std.int(s2d.width * Math.random()), Std.int(s2d.height * Math.random()), tile);
+        // }
     }
 
     // on each frame
