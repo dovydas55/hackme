@@ -32,10 +32,12 @@ type MoveRequestEvent struct {
 
 //User ...
 type User struct {
-	UserID    string `json:"user_id"`
-	Timestamp string `json:"timestamp"`
-	StartX    int    `json:"start_x"`
-	StartY    int    `json:"start_y"`
+	UserID      string `json:"user_id"`
+	Timestamp   string `json:"timestamp"`
+	StartX      int    `json:"start_x"`
+	StartY      int    `json:"start_y"`
+	WorldWidth  int    `json:"world_width"`
+	WorldHeight int    `json:"world_height"`
 }
 
 //Move ...
@@ -154,10 +156,12 @@ func (cs *concurrentSlice) append(item *websocket.Conn) string {
 		return ""
 	}
 	usr := User{
-		UserID:    id.String(),
-		Timestamp: time.Now().String(),
-		StartX:    getRandomIntegerInRange(0, mapWidth),
-		StartY:    getRandomIntegerInRange(0, mapHeight),
+		UserID:      id.String(),
+		Timestamp:   time.Now().String(),
+		StartX:      getRandomIntegerInRange(0, mapWidth),
+		StartY:      getRandomIntegerInRange(0, mapHeight),
+		WorldWidth:  mapWidth,
+		WorldHeight: mapHeight,
 	}
 	cs.usrs = append(cs.usrs, userData{conn: item, user: usr})
 	return id.String()
