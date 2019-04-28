@@ -18,6 +18,7 @@ const mapHeight = 1000
 //ResponseEvent ...
 type ResponseEvent struct {
 	Type        string      `json:"type"`
+	UserID      string      `json:"user_id"`
 	WorldWidth  int         `json:"world_width"`
 	WorldHeight int         `json:"world_height"`
 	Event       interface{} `json:"event"`
@@ -76,6 +77,7 @@ func reader(conn *websocket.Conn) {
 		_, uID := findUserID(conn)
 		response, responseErr := json.Marshal(ResponseEvent{
 			Type:        "USER_MOVE_EVENT",
+			UserID:      uID,
 			WorldWidth:  mapWidth,
 			WorldHeight: mapHeight,
 			Event: MoveRequestEvent{
@@ -127,6 +129,7 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 	response, responseErr := json.Marshal(ResponseEvent{
 		Type:        "USER_JOIN_EVENT",
+		UserID:      userID,
 		WorldWidth:  mapWidth,
 		WorldHeight: mapHeight,
 		Event:       usr,
