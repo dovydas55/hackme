@@ -2,21 +2,20 @@ package entities;
 
 import h2d.Graphics;
 import h2d.Object;
-import h2d.Scene;
 
 class Player extends Movable {
-    
+
     public var uuid : String;
-    public var player : Object;
+    public var entity(default, null) : Object;
 
     public function new(uuid:String, s2d:Object) {
         this.uuid = uuid;
-        this.player = initPlayer(s2d);
+        this.entity = initPlayer(s2d);
     }
 
     public override function update(du:Float) {
-        player.x += dx * du * 10;
-        player.y += dy * du * 10;
+        entity.x += dx * du * 10;
+        entity.y += dy * du * 10;
 
         // Reset its own directional vector
         dx = 0;

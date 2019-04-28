@@ -2,14 +2,14 @@ package;
 
 import h2d.Scene;
 
-class Camera extends h2d.Sprite
+class Camera extends h2d.Object
 {
-    public var viewX(get, set):Float;
-    public var viewY(get, set):Float;
+    public var viewX(get, set) : Float;
+    public var viewY(get, set) : Float;
+    
+    var scene : Scene;
 
-    var scene:Scene;
-
-    public function new(scene:Scene)
+    public function new(scene : Scene)
     {
         super(scene);
         this.scene = scene;

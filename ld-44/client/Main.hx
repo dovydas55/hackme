@@ -14,13 +14,14 @@ class Main extends App {
     var entities : Array<Entity>;
 
     var playerid : String;
-    var socket: js.html.WebSocket;
-    var map:TileGroup;
-    var camera:Camera;
+    var socket : js.html.WebSocket;
+    var map : TileGroup;
+    var camera : Camera; 
 
     override function init() {
-        camera = new Camera(s2d);
 
+        camera = new Camera(s2d);
+        
 		var hostname = js.Browser.window.location.hostname;
     	socket = new js.html.WebSocket("ws://"+hostname+":8080/ws");
 
@@ -50,8 +51,6 @@ class Main extends App {
 					for (e in ble)
 					{
 						var char = new Player(e.user_id, camera);
-						char.player.x = 250;
-				        char.player.y = 250;
 
 						players.set(playerid, char);
 					}
@@ -77,7 +76,6 @@ class Main extends App {
         {
             map.add(Std.int(s2d.width * Math.random()), Std.int(s2d.height * Math.random()), tile);
         }
-
     }
 
     // on each frame
@@ -101,6 +99,12 @@ class Main extends App {
             if (!(player.dx != 0 && player.dy != 0)) {
                 player.update(du);
             }
+        }
+
+        var player = getLocalPlayer(playerid);
+        if (player != null) {
+            camera.viewX = player.entity.x;
+            camera.viewY = player.entity.y;
         }
     }
 
@@ -134,9 +138,6 @@ class Main extends App {
 
 	        player.dx = dx;
 	        player.dy = dy;
-
-			camera.viewX = player.player.x;
-			camera.viewY = player.player.y;
         }
     }
 
