@@ -1,3 +1,4 @@
+import h2d.TileGroup;
 import hxd.App;
 import hxd.Key;
 import entities.Entity;
@@ -14,8 +15,12 @@ class Main extends App {
 
     var playerid : String;
     var socket: js.html.WebSocket;
+    var map:TileGroup;
+    var camera:Camera;
 
     override function init() {
+        camera = new Camera(s2d);
+
 		var hostname = js.Browser.window.location.hostname;
     	socket = new js.html.WebSocket("ws://"+hostname+":8080/ws");
 
@@ -44,7 +49,11 @@ class Main extends App {
 					var ble:Array<Dynamic> = response.event;
 					for (e in ble)
 					{
-						players.set(playerid, new Player(e.user_id, s2d));
+						var char = new Player(e.user_id, camera);
+						char.player.x = 250;
+				        char.player.y = 250;
+
+						players.set(playerid, char);
 					}
 
 				case 'USER_MOVE_EVENT':
@@ -58,8 +67,16 @@ class Main extends App {
         movables = new Array<Movable>();
         entities = new Array<Entity>();
 
-        entities.push(new Obstacle(s2d));
-        entities.push(new Spinner(s2d));
+        //entities.push(new Obstacle(s2d));
+        //entities.push(new Spinner(s2d));
+
+		var tile = h2d.Tile.fromColor(0x00ff00, 16, 16);
+        map = new TileGroup(tile, camera);
+
+        for (i in 0...1000)
+        {
+            map.add(Std.int(s2d.width * Math.random()), Std.int(s2d.height * Math.random()), tile);
+        }
 
     }
 
@@ -117,6 +134,9 @@ class Main extends App {
 
 	        player.dx = dx;
 	        player.dy = dy;
+
+			camera.viewX = player.player.x;
+			camera.viewY = player.player.y;
         }
     }
 

@@ -7,9 +7,9 @@ import h2d.Scene;
 class Player extends Movable {
     
     public var uuid : String;
-    var player : Object;
+    public var player : Object;
 
-    public function new(uuid:String, s2d:Scene) {
+    public function new(uuid:String, s2d:Object) {
         this.uuid = uuid;
         this.player = initPlayer(s2d);
     }
@@ -23,7 +23,7 @@ class Player extends Movable {
         dy = 0;
     }
 
-    function initPlayer(s2d:Scene): Graphics {
+    function initPlayer(s2d:Object): Graphics {
         var g = new Graphics(s2d);
         g.beginFill(0xFFFFFF);
         g.drawCircle(0, 0, 10, 20);
