@@ -21,50 +21,69 @@ class Main extends App {
     override function init() {
         
 		var hostname = js.Browser.window.location.hostname;
-    	socket = new js.html.WebSocket("ws://"+hostname+":8080/ws");
+        if (hostname != null) {
 
-    	socket.onopen = function(e:js.html.Event) {
-			trace("Succesfully connected "+e);
-		};
-		socket.onclose = function(event) {
-			trace("Closed connection", event);
-		};
-		socket.onerror = function(err) {
-			trace(err);
-		};
+            socket = new js.html.WebSocket("ws://"+hostname+":8080/ws");
 
-		socket.onmessage = function(msg){
-			trace(msg);
-			var response = haxe.Json.parse(msg.data);
+            socket.onopen = function(e:js.html.Event) {
+                trace("Succesfully connected "+e);
+            };
+            socket.onclose = function(event) {
+                trace("Closed connection", event);
+            };
+            socket.onerror = function(err) {
+                trace(err);
+            };
 
-			switch (response.type)
-			{
-				case 'USER_JOIN_EVENT':
-					trace(response.event);
-					if (playerid == "") {
-						playerid = response.user_id;
-					}
+            socket.onmessage = function(msg){
+                trace(msg);
+                var response = haxe.Json.parse(msg.data);
 
-					var ble:Array<Dynamic> = response.event;
-					for (e in ble)
-					{
-						var char = new Player(e.user_id, camera);
+                switch (response.type)
+                {
+                    case 'USER_JOIN_EVENT':
+                        trace(response.event);
+                        // Set local player id when joining
+                        if (playerid == "") {
+                            playerid = response.user_id;
+                        }
 
-						players.set(playerid, char);
-					}
+                        /*
+                            type User struct {
+                                UserID    string `json:"user_id"`
+                                Timestamp string `json:"timestamp"`
+                                StartX    int    `json:"start_x"`
+                                StartY    int    `json:"start_y"`
+                            }
+                        */
+                        var ble:Array<Dynamic> = response.event;
+                        for (user in ble)
+                        {
+                            // Add new players that have just joined
+                            // and move them to their starting position
+                            if (!players.exists(user.user_id)) {
+                                var player = new Player(user.user_id, camera);
+                                player.entity.x = user.start_x;
+                                player.entity.y = user.start_y;
+                                players.set(playerid, player);
+                            }
+                        }
 
-				case 'USER_MOVE_EVENT':
+                    case 'USER_MOVE_EVENT':
 
-					//move(response.event.user_id, response.event.direction);
-					trace(response.event);
-			}
-		}
+                        //move(response.event.user_id, response.event.direction);
+                        trace(response.event);
+                }
+            }
+        }
 
         players = new Map<String, Player>();
         movables = new Array<Movable>();
         entities = new Array<Entity>();
 
+        // Settings the view and the world
         camera = new Camera(s2d);
+        
 		var tile = h2d.Tile.fromColor(0x00ff00, 16, 16);
         map = new TileGroup(tile, camera);
 
@@ -108,7 +127,7 @@ class Main extends App {
         var player = getLocalPlayer(playerid);
         if (player != null)
         {
-        	if (dx != 0 && dy != 0)
+        	if (dx != 0 || dy != 0)
         	{
         		var ble = { "type":"move", "user_id": playerid, "dx": dx, "dy": dy};
         		socket.send(haxe.Json.stringify(ble));
