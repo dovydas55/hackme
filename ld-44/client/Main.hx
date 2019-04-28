@@ -9,7 +9,7 @@ import entities.Spinner;
 
 class Main extends App {
 
-    var players : Map<String, Player>;
+    var players : Array<Player>;
     var movables : Array<Movable>;
     var entities : Array<Entity>;
 
@@ -19,6 +19,13 @@ class Main extends App {
     var camera : Camera;
 
     override function init() {
+
+        players = new Array<Player>();
+        movables = new Array<Movable>();
+        entities = new Array<Entity>();
+
+        // Settings the view and the world
+        camera = new Camera(s2d);
 
 		var hostname = js.Browser.window.location.hostname;
         if (hostname != null) {
@@ -36,16 +43,17 @@ class Main extends App {
             };
 
             socket.onmessage = function(msg){
-                trace(msg);
+                // trace(msg);
                 var response = haxe.Json.parse(msg.data);
 
                 switch (response.type)
                 {
                     case 'USER_JOIN_EVENT':
-                        
+                        var isNewLocalPlayer : Bool = false;
                         // Set local player id when joining
                         if (playerid == null) {
                             playerid = response.user_id;
+                            isNewLocalPlayer = true;
                             trace("setting local user: " + playerid);
                         }
 
@@ -62,38 +70,51 @@ class Main extends App {
                         {
                             // Add new players that have just joined
                             // and move them to their starting position
-                            if (!players.exists(user.user_id)) {
+                            if (getLocalPlayer(user.user_id) == null) {
+                                // var player = user.user_id == playerid ?
+                                //  new Player(user.user_id, camera) :
+                                //  new Player(user.user_id, new Camera(s2d));
                                 var player = new Player(user.user_id, camera);
                                 player.entity.x = user.start_x;
                                 player.entity.y = user.start_y;
-                                players.set(playerid, player);
+                                players.push(player);
 
                                 trace("Adding new player at (" + player.entity.x + ", " + player.entity.y + ")");
                             }
                         }
+                        
+                        var count = 0;
+                        for (player in players) {
+                            count++;
+                        }
+                        trace(count);
+
+                        if (isNewLocalPlayer) generateMap(response.world_width, response.world_height);
 
                     case 'USER_MOVE_EVENT':
 
+                        /*
+                            type MoveRequestEvent struct {
+                                UserID string `json:"user_id"`
+                                Dx     int    `json:"dx"`
+                                Dy     int    `json:"dy"`
+                            }
+                        */
+                        var e:Dynamic = response.event;
+                        
+                        var player = getLocalPlayer(e.user_id);
+                        if (player != null) {
+                            player.dx = e.dx;
+                            player.dy = e.dy;
+                        
+                            trace("set move " + player.uuid + " (" + e.dx + ", " + e.dy + ")");
+                        }
+
                         //move(response.event.user_id, response.event.direction);
-                        trace(response.event);
+                        // trace(response.event);
                 }
             }
         }
-
-        players = new Map<String, Player>();
-        movables = new Array<Movable>();
-        entities = new Array<Entity>();
-
-        // Settings the view and the world
-        camera = new Camera(s2d);
-        
-		var tile = h2d.Tile.fromColor(0x00ff00, 16, 16);
-        map = new TileGroup(tile, camera);
-
-        // for (i in 0...1000)
-        // {
-        //     map.add(Std.int(s2d.width * Math.random()), Std.int(s2d.height * Math.random()), tile);
-        // }
     }
 
     // on each frame
@@ -164,11 +185,38 @@ class Main extends App {
         if (player != null) {
             camera.viewX = player.entity.x;
             camera.viewY = player.entity.y;
+            // trace("camera at (" + camera.viewX + ", " + camera.viewY + ")");
         }
     }
 
     function getLocalPlayer(uuid : String) : Player {
-        return players.get(uuid);
+        var filtered = players.filter(function (p) return p.uuid == uuid);
+        if (filtered.length == 0)
+            return null;
+        return filtered[0];
+    }
+
+    function generateMap(width: Float, height: Float) {
+        
+		var tile = h2d.Tile.fromColor(0x00ff00, 16, 16);
+        map = new TileGroup(tile, camera);
+
+        for (i in 0...500)
+        {
+            map.add(Std.int(width * Math.random()), Std.int(height * Math.random()), tile);
+        }
+
+
+        // var tile = new h2d.Graphics();
+
+        // //specify a color we want to draw with
+        // // tile.beginFill(0xEA8220);
+        // //Draw a rectangle at 10,10 that is 300 pixels wide and 200 pixels tall
+        // tile.drawRect(0, 0, width, height);
+        // //End our fill
+        // // tile.endFill();
+        
+        // map = new TileGroup(tile, camera);
     }
 
     static function main() {
