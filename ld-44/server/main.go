@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"sync"
@@ -61,7 +60,6 @@ func reader(conn *websocket.Conn) {
 		json := MoveRequestEvent{}
 		err := conn.ReadJSON(&json)
 		if err != nil {
-			fmt.Println("--------------------------")
 			log.Println(err)
 			clients.deleteConnection(conn)
 			return
