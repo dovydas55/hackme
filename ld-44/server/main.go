@@ -32,10 +32,12 @@ type MoveRequestEvent struct {
 
 //User ...
 type User struct {
-	UserID    string `json:"user_id"`
-	Timestamp string `json:"timestamp"`
-	StartX    int    `json:"start_x"`
-	StartY    int    `json:"start_y"`
+	UserID      string `json:"user_id"`
+	Timestamp   string `json:"timestamp"`
+	StartX      int    `json:"start_x"`
+	StartY      int    `json:"start_y"`
+	WorldWidth  int    `json:"world_width"`
+	WorldHeight int    `json:"world_height"`
 }
 
 //Move ...
@@ -64,14 +66,29 @@ var upgrader = websocket.Upgrader{
 
 func reader(conn *websocket.Conn) {
 	for {
-		json := MoveRequestEvent{}
-		err := conn.ReadJSON(&json)
+		mv := MoveRequestEvent{}
+		err := conn.ReadJSON(&mv)
 		if err != nil {
 			log.Println(err)
 			clients.deleteConnection(conn)
 			return
 		}
-		log.Println(json.Type, json.UserID, json.Dx, json.Dy)
+		log.Println(mv.Type, mv.UserID, mv.Dx, mv.Dy)
+		_, uID := findUserID(conn)
+		response, responseErr := json.Marshal(ResponseEvent{
+			Type:   "USER_MOVE_EVENT",
+			UserID: uID,
+			Event: MoveRequestEvent{
+				UserID: uID,
+				Dx:     mv.Dx,
+				Dy:     mv.Dy,
+			},
+		})
+		if responseErr != nil {
+			log.Println(responseErr)
+			return
+		}
+		writeMessage(websocket.TextMessage, response)
 	}
 }
 
@@ -139,10 +156,12 @@ func (cs *concurrentSlice) append(item *websocket.Conn) string {
 		return ""
 	}
 	usr := User{
-		UserID:    id.String(),
-		Timestamp: time.Now().String(),
-		StartX:    getRandomIntegerInRange(0, mapWidth),
-		StartY:    getRandomIntegerInRange(0, mapHeight),
+		UserID:      id.String(),
+		Timestamp:   time.Now().String(),
+		StartX:      getRandomIntegerInRange(0, mapWidth),
+		StartY:      getRandomIntegerInRange(0, mapHeight),
+		WorldWidth:  mapWidth,
+		WorldHeight: mapHeight,
 	}
 	cs.usrs = append(cs.usrs, userData{conn: item, user: usr})
 	return id.String()
