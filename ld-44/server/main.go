@@ -13,8 +13,9 @@ import (
 
 //ResponseEvent ...
 type ResponseEvent struct {
-	Type  string      `json:"type"`
-	Event interface{} `json:"event"`
+	Type  string      	`json:"type"`
+	UserID  string 		`json:"user_id"`
+	Event interface{} 	`json:"event"`
 }
 
 //User ...
@@ -95,13 +96,18 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	log.Println("Client succesfully connected")
-	clients.append(ws)
+	var userID = clients.append(ws)
+	if userID == "" {
+		return
+	}
+
 	var usr []User
 	for _, allUsrs := range clients.usrs {
 		usr = append(usr, allUsrs.user)
 	}
 	response, responseErr := json.Marshal(ResponseEvent{
 		Type:  "USER_JOIN_EVENT",
+		UserID: userID,
 		Event: usr,
 	})
 	if responseErr != nil {
@@ -121,17 +127,19 @@ func main() {
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
-func (cs *concurrentSlice) append(item *websocket.Conn) {
+func (cs *concurrentSlice) append(item *websocket.Conn) string {
 	cs.Lock()
 	defer cs.Unlock()
 	id, uuidErr := uuid.NewV4()
 	if uuidErr != nil {
 		log.Println(uuidErr)
-		return
+		return ""
 	}
 	usr := User{
 		UserID:    id.String(),
 		Timestamp: time.Now().String(),
 	}
 	cs.usrs = append(cs.usrs, userData{conn: item, user: usr})
+
+	return id.String()
 }

@@ -9,10 +9,47 @@ class Main extends App {
 
     var bmp : Bitmap;
     var anim : Anim;
-    var players : Array<Player>;
+    var players : Map<String, Player>;
     var playerid : String;
 
     override function init() {
+		var hostname = js.Browser.window.location.hostname;
+    	var socket = new js.html.WebSocket("ws://"+hostname+":8080/ws");
+
+    	socket.onopen = function(e:js.html.Event) {
+			trace("Succesfully connected "+e);
+		};
+		socket.onclose = function(event) {
+			trace("Closed connection", event);
+		};
+		socket.onerror = function(err) {
+			trace(err);
+		};
+
+		socket.onmessage = function(msg){
+			trace(msg);
+			var response = haxe.Json.parse(msg.data);
+
+			switch (response.type)
+			{
+				case 'USER_JOIN_EVENT':
+					trace(response.event);
+					if (playerid == "") {
+						playerid = response.user_id;
+					}
+
+					var ble:Array<Dynamic> = response.event;
+					for (e in ble)
+					{
+						players.set(playerid, new Player(e.user_id, s2d));
+					}
+
+				case 'USER_MOVE_EVENT':
+
+					//move(response.event.user_id, response.event.direction);
+					trace(response.event);
+			}
+		}
         // allocate a Texture with red color and creates a 100x100 Tile from it
         var tile = Tile.fromColor(0xFF0000, 100, 100);
         // create a Bitmap object, which will display the tile
@@ -35,7 +72,7 @@ class Main extends App {
         anim.x = s2d.width * 0.5;
         anim.y = s2d.height * 0.25;
 
-        players = new Array<Player>();
+        players = new Map<String, Player>();
     }
 
     // on each frame
@@ -50,13 +87,12 @@ class Main extends App {
 
         handleInput();
 
-        for (var player in players) {
+        for (player in players) {
             player.update(du);
         }
     }
 
     function handleInput() {
-        
         // update player position
         // move this later into a proper input handler or manager
         var dx = 0;
@@ -71,16 +107,21 @@ class Main extends App {
             dx = -1;
         }
         if (Key.isDown(Key.RIGHT) || Key.isDown(Key.D)) {
-            dx = 1;          
+            dx = 1;
         }
 
+
         var player = getPlayer(playerid);
-        player.dx = dx;
-        player.dy = dy;
+        if (player != null)
+        {
+        	websocket.send('left');
+	        player.dx = dx;
+	        player.dy = dy;
+        }
     }
 
     function getPlayer(uuid : String) : Player {
-        return new Player(uuid, s2d);
+        return players.get(uuid);
     }
 
     static function main() {
