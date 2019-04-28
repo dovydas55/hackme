@@ -16,10 +16,10 @@ class Main extends App {
     var playerid : String;
     var socket : js.html.WebSocket;
     var map : TileGroup;
-    var camera : Camera; 
+    var camera : Camera;
 
     override function init() {
-        
+
 		var hostname = js.Browser.window.location.hostname;
     	socket = new js.html.WebSocket("ws://"+hostname+":8080/ws");
 
@@ -137,7 +137,7 @@ class Main extends App {
     }
 
     function handleViewport() {
-        
+
         var player = getLocalPlayer(playerid);
         if (player != null) {
             camera.viewX = player.entity.x;

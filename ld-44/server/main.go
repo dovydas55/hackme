@@ -64,14 +64,29 @@ var upgrader = websocket.Upgrader{
 
 func reader(conn *websocket.Conn) {
 	for {
-		json := MoveRequestEvent{}
-		err := conn.ReadJSON(&json)
+		mv := MoveRequestEvent{}
+		err := conn.ReadJSON(&mv)
 		if err != nil {
 			log.Println(err)
 			clients.deleteConnection(conn)
 			return
 		}
-		log.Println(json.Type, json.UserID, json.Dx, json.Dy)
+		log.Println(mv.Type, mv.UserID, mv.Dx, mv.Dy)
+		_, uID := findUserID(conn)
+		response, responseErr := json.Marshal(ResponseEvent{
+			Type:   "USER_MOVE_EVENT",
+			UserID: uID,
+			Event: MoveRequestEvent{
+				UserID: uID,
+				Dx:     mv.Dx,
+				Dy:     mv.Dy,
+			},
+		})
+		if responseErr != nil {
+			log.Println(responseErr)
+			return
+		}
+		writeMessage(websocket.TextMessage, response)
 	}
 }
 
