@@ -19,8 +19,6 @@ class Main extends App {
     var camera : Camera; 
 
     override function init() {
-
-        camera = new Camera(s2d);
         
 		var hostname = js.Browser.window.location.hostname;
     	socket = new js.html.WebSocket("ws://"+hostname+":8080/ws");
@@ -66,9 +64,7 @@ class Main extends App {
         movables = new Array<Movable>();
         entities = new Array<Entity>();
 
-        //entities.push(new Obstacle(s2d));
-        //entities.push(new Spinner(s2d));
-
+        camera = new Camera(s2d);
 		var tile = h2d.Tile.fromColor(0x00ff00, 16, 16);
         map = new TileGroup(tile, camera);
 
@@ -80,32 +76,14 @@ class Main extends App {
 
     // on each frame
     override function update(dt:Float) {
-        // dt is the change in time in seconds
+        // dt is the change in time in milliseconds
         // assume 60 frames per second
         // du is then the change in time unit
         var du = dt * 60;
 
         handleInput();
-
-        for (entity in entities) {
-            entity.update(du);
-        }
-        for (movable in movables) {
-            movable.update(du);
-        }
-        for (player in players) {
-            // do nothing for now when it's diagonal input
-            // TODO: change this later
-            if (!(player.dx != 0 && player.dy != 0)) {
-                player.update(du);
-            }
-        }
-
-        var player = getLocalPlayer(playerid);
-        if (player != null) {
-            camera.viewX = player.entity.x;
-            camera.viewY = player.entity.y;
-        }
+        handleUpdate(du);
+        handleViewport();
     }
 
     function handleInput() {
@@ -138,6 +116,32 @@ class Main extends App {
 
 	        player.dx = dx;
 	        player.dy = dy;
+        }
+    }
+
+    function handleUpdate(du : Float) {
+
+        for (entity in entities) {
+            entity.update(du);
+        }
+        for (movable in movables) {
+            movable.update(du);
+        }
+        for (player in players) {
+            // do nothing for now when it's diagonal input
+            // TODO: change this later
+            if (!(player.dx != 0 && player.dy != 0)) {
+                player.update(du);
+            }
+        }
+    }
+
+    function handleViewport() {
+        
+        var player = getLocalPlayer(playerid);
+        if (player != null) {
+            camera.viewX = player.entity.x;
+            camera.viewY = player.entity.y;
         }
     }
 
