@@ -8,8 +8,8 @@
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
-            // "url": "http://localhost:8080",
-            "url": "file://${workspaceFolder}/index.html",
+            "url": "http://localhost:8080",
+            // "url": "file://${workspaceFolder}/index.html",
             "webRoot": "${workspaceFolder}",
             "preLaunchTask": {
 				"type" : "haxe",
