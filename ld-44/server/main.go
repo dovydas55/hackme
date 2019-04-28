@@ -18,6 +18,13 @@ type ResponseEvent struct {
 	Event interface{} 	`json:"event"`
 }
 
+type MoveRequestEvent struct {
+	Type  string      	`json:"type"`
+	UserID  string 		`json:"user_id"`
+	Dx int 				`json:"dx"`
+	Dy int 				`json:"dy"`
+}
+
 //User ...
 type User struct {
 	UserID    string `json:"user_id"`
@@ -50,11 +57,16 @@ var upgrader = websocket.Upgrader{
 
 func reader(conn *websocket.Conn) {
 	for {
-		messageType, p, err := conn.ReadMessage()
+		json := MoveRequestEvent{}
+
+		err := conn.ReadJSON(&json)
+		//messageType, p, err := conn.ReadMessage()
 		if err != nil {
 			log.Println(err)
 			return
 		}
+		log.Println(json.Type, json.UserID, json.Dx, json.Dy)
+		/*
 		log.Println(string(p), messageType)
 		response, responseErr := json.Marshal(ResponseEvent{
 			Type: "USER_MOVE_EVENT",
@@ -67,7 +79,7 @@ func reader(conn *websocket.Conn) {
 			log.Println(responseErr)
 			return
 		}
-		writeMessage(messageType, response)
+		writeMessage(messageType, response)*/
 	}
 }
 

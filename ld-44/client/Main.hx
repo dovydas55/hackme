@@ -8,8 +8,6 @@ import entities.Spinner;
 
 class Main extends App {
 
-    var bmp : Bitmap;
-    var anim : Anim;
     var players : Map<String, Player>;
     var movables : Array<Movable>;
     var entities : Array<Entity>;
@@ -111,7 +109,7 @@ class Main extends App {
         var player = getLocalPlayer(playerid);
         if (player != null)
         {
-        	var ble = { "type":"", "dx": dx, "dy": dy};
+        	var ble = { "type":"move", "user_id": playerid "dx": dx, "dy": dy};
         	socket.send(haxe.Json.stringify(ble));
 	        player.dx = dx;
 	        player.dy = dy;
