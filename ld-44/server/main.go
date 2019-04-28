@@ -22,6 +22,7 @@ type ResponseEvent struct {
 	WorldWidth  int         `json:"world_width"`
 	WorldHeight int         `json:"world_height"`
 	Event       interface{} `json:"event"`
+	MoveEvent   interface{} `json:"move_event"`
 }
 
 //MoveRequestEvent ...
@@ -80,7 +81,7 @@ func reader(conn *websocket.Conn) {
 			UserID:      uID,
 			WorldWidth:  mapWidth,
 			WorldHeight: mapHeight,
-			Event: MoveRequestEvent{
+			MoveEvent: MoveRequestEvent{
 				UserID: uID,
 				Dx:     mv.Dx,
 				Dy:     mv.Dy,
