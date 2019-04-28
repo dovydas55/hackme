@@ -11,10 +11,11 @@ class Main extends App {
     var anim : Anim;
     var players : Map<String, Player>;
     var playerid : String;
+    var socket: js.html.WebSocket;
 
     override function init() {
 		var hostname = js.Browser.window.location.hostname;
-    	var socket = new js.html.WebSocket("ws://"+hostname+":8080/ws");
+    	socket = new js.html.WebSocket("ws://"+hostname+":8080/ws");
 
     	socket.onopen = function(e:js.html.Event) {
 			trace("Succesfully connected "+e);
@@ -114,7 +115,8 @@ class Main extends App {
         var player = getPlayer(playerid);
         if (player != null)
         {
-        	websocket.send('left');
+        	var ble = { "type":"", "dx": dx, "dy": dy};
+        	socket.send(haxe.Json.stringify(ble));
 	        player.dx = dx;
 	        player.dy = dy;
         }
