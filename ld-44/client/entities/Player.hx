@@ -22,6 +22,12 @@ class Player extends Movable {
         dy = 0;
     }
 
+    public function setPos(x:Int, y:Int)
+    {
+        entity.x = x;
+        entity.y = y;
+    }
+
     function initPlayer(s2d:Object): Graphics {
         var g = new Graphics(s2d);
         g.beginFill(0xFFFFFF);
