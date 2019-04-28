@@ -15,8 +15,12 @@ class Player extends Movable {
     }
 
     public override function update(du:Float) {
-        player.x += dx * du;
-        player.y += dy * du;
+        player.x += dx * du * 10;
+        player.y += dy * du * 10;
+
+        // Reset its own directional vector
+        dx = 0;
+        dy = 0;
     }
 
     function initPlayer(s2d:Scene): Graphics {
