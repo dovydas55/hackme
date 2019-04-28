@@ -2,5 +2,7 @@ package entities;
 
 class Entity {
 
-    public function update(du:Float) {}
+    public var radius : Float;
+    
+    public function update(du : Float) {}
 }
