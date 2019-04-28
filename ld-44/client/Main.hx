@@ -109,8 +109,12 @@ class Main extends App {
         var player = getLocalPlayer(playerid);
         if (player != null)
         {
-        	var ble = { "type":"move", "user_id": playerid, "dx": dx, "dy": dy};
-        	socket.send(haxe.Json.stringify(ble));
+        	if (dx != 0 && dy != 0)
+        	{
+        		var ble = { "type":"move", "user_id": playerid, "dx": dx, "dy": dy};
+        		socket.send(haxe.Json.stringify(ble));
+        	}
+
 	        player.dx = dx;
 	        player.dy = dy;
         }
