@@ -17,9 +17,11 @@ const mapHeight = 1000
 
 //ResponseEvent ...
 type ResponseEvent struct {
-	Type   string      `json:"type"`
-	UserID string      `json:"user_id"`
-	Event  interface{} `json:"event"`
+	Type        string      `json:"type"`
+	UserID      string      `json:"user_id"`
+	WorldWidth  int         `json:"world_width"`
+	WorldHeight int         `json:"world_height"`
+	Event       interface{} `json:"event"`
 }
 
 //MoveRequestEvent ...
@@ -32,12 +34,10 @@ type MoveRequestEvent struct {
 
 //User ...
 type User struct {
-	UserID      string `json:"user_id"`
-	Timestamp   string `json:"timestamp"`
-	StartX      int    `json:"start_x"`
-	StartY      int    `json:"start_y"`
-	WorldWidth  int    `json:"world_width"`
-	WorldHeight int    `json:"world_height"`
+	UserID    string `json:"user_id"`
+	Timestamp string `json:"timestamp"`
+	StartX    int    `json:"start_x"`
+	StartY    int    `json:"start_y"`
 }
 
 //Move ...
@@ -76,8 +76,10 @@ func reader(conn *websocket.Conn) {
 		log.Println(mv.Type, mv.UserID, mv.Dx, mv.Dy)
 		_, uID := findUserID(conn)
 		response, responseErr := json.Marshal(ResponseEvent{
-			Type:   "USER_MOVE_EVENT",
-			UserID: uID,
+			Type:        "USER_MOVE_EVENT",
+			UserID:      uID,
+			WorldWidth:  mapWidth,
+			WorldHeight: mapHeight,
 			Event: MoveRequestEvent{
 				UserID: uID,
 				Dx:     mv.Dx,
@@ -126,9 +128,11 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 		usr = append(usr, allUsrs.user)
 	}
 	response, responseErr := json.Marshal(ResponseEvent{
-		Type:   "USER_JOIN_EVENT",
-		UserID: userID,
-		Event:  usr,
+		Type:        "USER_JOIN_EVENT",
+		WorldWidth:  mapWidth,
+		WorldHeight: mapHeight,
+		UserID:      userID,
+		Event:       usr,
 	})
 	if responseErr != nil {
 		log.Println(responseErr)
@@ -156,12 +160,10 @@ func (cs *concurrentSlice) append(item *websocket.Conn) string {
 		return ""
 	}
 	usr := User{
-		UserID:      id.String(),
-		Timestamp:   time.Now().String(),
-		StartX:      getRandomIntegerInRange(0, mapWidth),
-		StartY:      getRandomIntegerInRange(0, mapHeight),
-		WorldWidth:  mapWidth,
-		WorldHeight: mapHeight,
+		UserID:    id.String(),
+		Timestamp: time.Now().String(),
+		StartX:    getRandomIntegerInRange(0, mapWidth),
+		StartY:    getRandomIntegerInRange(0, mapHeight),
 	}
 	cs.usrs = append(cs.usrs, userData{conn: item, user: usr})
 	return id.String()
