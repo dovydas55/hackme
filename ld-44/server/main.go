@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"sync"
@@ -13,16 +14,16 @@ import (
 
 //ResponseEvent ...
 type ResponseEvent struct {
-	Type  string      	`json:"type"`
-	UserID  string 		`json:"user_id"`
-	Event interface{} 	`json:"event"`
+	Type   string      `json:"type"`
+	UserID string      `json:"user_id"`
+	Event  interface{} `json:"event"`
 }
 
 type MoveRequestEvent struct {
-	Type  string      	`json:"type"`
-	UserID  string 		`json:"user_id"`
-	Dx int 				`json:"dx"`
-	Dy int 				`json:"dy"`
+	Type   string `json:"type"`
+	UserID string `json:"user_id"`
+	Dx     int    `json:"dx"`
+	Dy     int    `json:"dy"`
 }
 
 //User ...
@@ -58,38 +59,24 @@ var upgrader = websocket.Upgrader{
 func reader(conn *websocket.Conn) {
 	for {
 		json := MoveRequestEvent{}
-
 		err := conn.ReadJSON(&json)
-		//messageType, p, err := conn.ReadMessage()
 		if err != nil {
+			fmt.Println("--------------------------")
 			log.Println(err)
+			clients.deleteConnection(conn)
 			return
 		}
 		log.Println(json.Type, json.UserID, json.Dx, json.Dy)
-		/*
-		log.Println(string(p), messageType)
-		response, responseErr := json.Marshal(ResponseEvent{
-			Type: "USER_MOVE_EVENT",
-			Event: Move{
-				Direction: string(p),
-				UserID:    findUserID(conn),
-			},
-		})
-		if responseErr != nil {
-			log.Println(responseErr)
-			return
-		}
-		writeMessage(messageType, response)*/
 	}
 }
 
-func findUserID(key *websocket.Conn) string {
-	for _, u := range clients.usrs {
+func findUserID(key *websocket.Conn) (int, string) {
+	for i, u := range clients.usrs {
 		if u.conn == key {
-			return u.user.UserID
+			return i, u.user.UserID
 		}
 	}
-	return ""
+	return -1, ""
 }
 
 func writeMessage(messageType int, p []byte) {
@@ -118,9 +105,9 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 		usr = append(usr, allUsrs.user)
 	}
 	response, responseErr := json.Marshal(ResponseEvent{
-		Type:  "USER_JOIN_EVENT",
+		Type:   "USER_JOIN_EVENT",
 		UserID: userID,
-		Event: usr,
+		Event:  usr,
 	})
 	if responseErr != nil {
 		log.Println(responseErr)
@@ -154,4 +141,11 @@ func (cs *concurrentSlice) append(item *websocket.Conn) string {
 	cs.usrs = append(cs.usrs, userData{conn: item, user: usr})
 
 	return id.String()
+}
+
+func (cs *concurrentSlice) deleteConnection(item *websocket.Conn) {
+	cs.Lock()
+	defer cs.Unlock()
+	i, _ := findUserID(item)
+	cs.usrs = append(cs.usrs[:i], cs.usrs[i+1:]...)
 }
