@@ -30,7 +30,7 @@ class Main extends App {
 		var hostname = js.Browser.window.location.hostname;
         if (hostname != null) {
 
-            socket = new js.html.WebSocket("ws://"+hostname+":8080/ws");
+            socket = new js.html.WebSocket("ws://192.168.1.10:8080/ws");
 
             socket.onopen = function(e:js.html.Event) {
                 trace("Succesfully connected "+e);
@@ -82,7 +82,7 @@ class Main extends App {
                                 trace("Adding new player at (" + player.entity.x + ", " + player.entity.y + ")");
                             }
                         }
-                        
+
                         var count = 0;
                         for (player in players) {
                             count++;
@@ -101,12 +101,12 @@ class Main extends App {
                             }
                         */
                         var e:Dynamic = response.event;
-                        
+
                         var player = getLocalPlayer(e.user_id);
                         if (player != null) {
                             player.dx = e.dx;
                             player.dy = e.dy;
-                        
+
                             trace("set move " + player.uuid + " (" + e.dx + ", " + e.dy + ")");
                         }
 
@@ -197,7 +197,7 @@ class Main extends App {
     }
 
     function generateMap(width: Float, height: Float) {
-        
+
 		var tile = h2d.Tile.fromColor(0x00ff00, 16, 16);
         map = new TileGroup(tile, camera);
 
@@ -215,7 +215,7 @@ class Main extends App {
         // tile.drawRect(0, 0, width, height);
         // //End our fill
         // // tile.endFill();
-        
+
         // map = new TileGroup(tile, camera);
     }
 

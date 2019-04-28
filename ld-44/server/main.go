@@ -90,7 +90,7 @@ func reader(conn *websocket.Conn) {
 			log.Println(responseErr)
 			return
 		}
-		writeMessage(websocket.TextMessage, response)
+		clients.write(websocket.TextMessage, response)
 	}
 }
 
@@ -101,15 +101,6 @@ func findUserID(key *websocket.Conn) (int, string) {
 		}
 	}
 	return -1, ""
-}
-
-func writeMessage(messageType int, p []byte) {
-	for _, u := range clients.usrs {
-		if err := u.conn.WriteMessage(messageType, p); err != nil {
-			log.Println(err)
-			return
-		}
-	}
 }
 
 func wsEndpoint(w http.ResponseWriter, r *http.Request) {
@@ -138,7 +129,7 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 		log.Println(responseErr)
 		return
 	}
-	writeMessage(websocket.TextMessage, response)
+	clients.write(websocket.TextMessage, response)
 	go reader(ws)
 }
 
@@ -149,6 +140,17 @@ func setupRoutes() {
 func main() {
 	setupRoutes()
 	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func (cs *concurrentSlice) write(messageType int, p []byte) {
+	cs.Lock()
+	defer cs.Unlock()
+	for _, u := range clients.usrs {
+		if err := u.conn.WriteMessage(messageType, p); err != nil {
+			log.Println(err)
+			return
+		}
+	}
 }
 
 func (cs *concurrentSlice) append(item *websocket.Conn) string {
