@@ -19,6 +19,9 @@ class Main extends App {
     var camera : Camera;
 
     override function init() {
+        var font : h2d.Font = hxd.res.DefaultFont.get();
+        var playerIdText = new h2d.Text(font, s2d);
+        playerIdText.text = "PlayerId:";
 
 		var hostname = js.Browser.window.location.hostname;
     	socket = new js.html.WebSocket("ws://"+hostname+":8080/ws");
@@ -34,29 +37,33 @@ class Main extends App {
 		};
 
 		socket.onmessage = function(msg){
-			trace(msg);
 			var response = haxe.Json.parse(msg.data);
 
+			trace(response);
 			switch (response.type)
 			{
 				case 'USER_JOIN_EVENT':
-					trace(response.event);
-					if (playerid == "") {
+					if (playerid == "" || playerid == null) {
 						playerid = response.user_id;
+                        playerIdText.text = "PlayerId: "+ playerid;
 					}
 
 					var ble:Array<Dynamic> = response.event;
 					for (e in ble)
 					{
-						var char = new Player(e.user_id, camera);
-
-						players.set(playerid, char);
+                        var player = players.get(e.user_id);
+                        if(player == null)
+                        {
+                            var char = new Player(e.user_id, camera);
+                            char.setPos(e.start_x, e.start_y);
+						    players.set(e.user_id, char);
+                        }
 					}
 
 				case 'USER_MOVE_EVENT':
-
-					//move(response.event.user_id, response.event.direction);
-					trace(response.event);
+                    var player = players.get(response.move_event.user_id);
+                    player.dx = response.move_event.dx;
+                    player.dy = response.move_event.dy;
 			}
 		}
 
@@ -108,7 +115,7 @@ class Main extends App {
         var player = getLocalPlayer(playerid);
         if (player != null)
         {
-        	if (dx != 0 && dy != 0)
+        	if (dx != 0 || dy != 0)
         	{
         		var ble = { "type":"move", "user_id": playerid, "dx": dx, "dy": dy};
         		socket.send(haxe.Json.stringify(ble));
