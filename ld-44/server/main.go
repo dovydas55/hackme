@@ -145,6 +145,7 @@ func wsEndpoint(w http.ResponseWriter, r *http.Request) {
 
 func setupRoutes() {
 	http.HandleFunc("/ws", wsEndpoint)
+	http.Handle("/", http.FileServer(http.Dir("../client")))
 }
 
 func main() {
@@ -173,8 +174,18 @@ func (cs *concurrentSlice) append(item *websocket.Conn) string {
 func (cs *concurrentSlice) deleteConnection(item *websocket.Conn) {
 	cs.Lock()
 	defer cs.Unlock()
-	i, _ := findUserID(item)
+	i, uID := findUserID(item)
 	cs.usrs = append(cs.usrs[:i], cs.usrs[i+1:]...)
+
+	response, responseErr := json.Marshal(ResponseEvent{
+		Type:        "USER_REMOVE_EVENT",
+		UserID:      uID,
+	})
+	if responseErr != nil {
+		log.Println(responseErr)
+		return
+	}
+	writeMessage(websocket.TextMessage, response)
 }
 
 func getRandomIntegerInRange(min, max int) int {

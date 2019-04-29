@@ -64,6 +64,13 @@ class Main extends App {
                     var player = players.get(response.move_event.user_id);
                     player.dx = response.move_event.dx;
                     player.dy = response.move_event.dy;
+                case 'USER_REMOVE_EVENT':
+                	var player = players.get(response.user_id);
+                	if (player != null)
+                	{
+                		camera.removeChild(player.entity);
+                		players.remove(response.user_id);
+                	}
 			}
 		}
 
